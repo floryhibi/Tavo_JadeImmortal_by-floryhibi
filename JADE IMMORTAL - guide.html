@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title data-i18n="meta.1">🪷 JADE IMMORTAL — интерактивный гайд</title>
+<style>
+:root{
+  --ink:#0e1713; --ink2:#16241e; --paper:#f5efe2; --paper2:#efe6d2;
+  --jade:#2e6b57; --jade-l:#4b8a72; --jade-xl:#8fb8a6;
+  --cinn:#b03a2e; --cinn-d:#8c2b21; --gold:#c9a24b; --gold-l:#e2c98b;
+  --ink-t:#1d2b25;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink) fixed;
+  color:var(--paper);
+  font-family:Georgia,'Times New Roman',serif;
+  line-height:1.65;
+  background-image:radial-gradient(ellipse at 20% 0%, #1a2b23 0%, transparent 55%), radial-gradient(ellipse at 85% 100%, #241a14 0%, transparent 50%);
+}
+code{background:#23362d;color:var(--gold-l);padding:1px 7px;border-radius:4px;font-size:.88em;border:1px solid #33493e}
+h1,h2,h3,h4{font-weight:600;letter-spacing:.02em}
+.container{max-width:1060px;margin:0 auto;padding:0 20px}
+
+header{position:relative;text-align:center;padding:70px 20px 46px;overflow:hidden}
+.bi{
+  width:150px;height:150px;margin:0 auto 22px;border-radius:50%;
+  background:radial-gradient(circle at 38% 34%, #6fae92 0%, var(--jade) 42%, #1d4a3a 78%, #123128 100%);
+  box-shadow:0 0 0 6px #0a120f, 0 0 0 8px var(--gold), 0 14px 44px rgba(0,0,0,.6), inset 0 0 34px rgba(0,0,0,.5);
+  position:relative;
+}
+.bi::after{content:'';position:absolute;inset:38px;border-radius:50%;background:var(--ink);box-shadow:inset 0 0 18px rgba(0,0,0,.9), 0 0 0 3px var(--gold)}
+header h1{font-size:clamp(30px,5vw,52px);color:var(--gold-l);text-shadow:0 3px 18px rgba(0,0,0,.7)}
+header h1 .lotus{color:var(--cinn)}
+header .sub{color:var(--jade-xl);font-style:italic;margin-top:8px;font-size:17px}
+.seal{
+  display:inline-block;margin-top:18px;padding:7px 15px;background:var(--cinn);color:#f8ecd9;
+  border-radius:4px;font-size:14px;letter-spacing:.16em;box-shadow:0 4px 14px rgba(176,58,46,.4);
+  transform:rotate(-2deg);border:1px solid var(--cinn-d);
+}
+.hd-clouds{position:absolute;left:0;right:0;top:0;pointer-events:none;opacity:.35}
+.hd-clouds svg{width:100%;height:110px}
+
+.silk{height:5px;background:linear-gradient(90deg, transparent, var(--cinn) 18%, var(--gold) 50%, var(--cinn) 82%, transparent);opacity:.85}
+
+nav{
+  position:sticky;top:0;z-index:50;background:rgba(14,23,19,.94);backdrop-filter:blur(8px);
+  border-bottom:1px solid #2a3f35;
+}
+nav .tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:10px 8px}
+.tab{
+  background:none;border:1px solid transparent;color:var(--jade-xl);cursor:pointer;
+  font-family:inherit;font-size:14.5px;padding:7px 14px;border-radius:20px;transition:.2s;white-space:nowrap;
+}
+.tab:hover{color:var(--gold-l);border-color:#3a5245}
+.tab.act{background:var(--jade);color:#f2f7f0;border-color:var(--jade-l)}
+
+main{display:block}
+.panel{display:none;padding:44px 0 30px;animation:fade .35s ease}
+.panel.act{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-head{text-align:center;margin-bottom:30px}
+.sec-num{display:block;color:var(--cinn);font-size:14px;letter-spacing:.3em;margin-bottom:6px}
+.sec-head h2{font-size:clamp(24px,3.6vw,34px);color:var(--gold-l)}
+.sec-sub{color:var(--jade-xl);font-style:italic;max-width:640px;margin:8px auto 0}
+
+.card{
+  background:linear-gradient(160deg, #18272000 0%, transparent), var(--ink2);
+  border:1px solid #2c4438;border-left:4px solid var(--jade);
+  border-radius:10px;padding:22px 26px;margin:0 auto 22px;max-width:900px;
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+}
+.card h3{color:var(--gold);margin-bottom:12px;font-size:20px}
+.card h4{color:var(--jade-xl);margin:14px 0 6px}
+.card p{margin:8px 0}
+.note{color:#b8cec2;font-size:14.5px;background:#14201a;border:1px dashed #36503f;border-radius:8px;padding:10px 14px;margin-top:12px}
+.warn{background:#2a1a16;border:1px solid #6b3a30;border-left:4px solid var(--cinn);border-radius:8px;padding:14px 18px;margin-top:14px}
+.warn b{color:#e8a598}
+ul.dots{list-style:none;margin:8px 0}
+ul.dots li{padding:5px 0 5px 26px;position:relative}
+ul.dots li::before{content:'✦';position:absolute;left:2px;color:var(--cinn)}
+ol.nums{margin:10px 0 10px 24px}
+ol.nums li{padding:6px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+th{background:#1d332a;color:var(--gold-l);text-align:left;padding:9px 12px;border:1px solid #2f4a3c}
+td{padding:9px 12px;border:1px solid #27392f;vertical-align:top}
+tr:nth-child(even) td{background:#131f19}
+td.on{color:#7fc79e;font-weight:bold}
+td.off{color:#c98f7f}
+.chain{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+.chain-step{background:#14201a;border:1px solid #33493e;border-radius:8px;padding:10px 16px;text-align:center;font-size:14px}
+.chain-arrow{color:var(--cinn);font-size:22px}
+.codeblock{background:#0b1410;border:1px solid #2c4438;border-radius:8px;padding:14px 18px;margin:12px 0;font-size:13.5px;overflow-x:auto;color:#cfe3d7}
+.codeblock b{color:var(--gold-l)}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:960px;margin:0 auto 24px}
+.step{background:var(--ink2);border:1px solid #2c4438;border-top:3px solid var(--gold);border-radius:10px;padding:18px 20px}
+.step-n{display:inline-block;background:var(--cinn);color:#f8ecd9;border-radius:50%;width:34px;height:34px;line-height:34px;text-align:center;font-size:16px;margin-bottom:10px}
+.step h4{color:var(--gold-l);margin-bottom:6px}
+
+.quiz-box{max-width:640px;margin:0 auto;background:var(--ink2);border:1px solid #2c4438;border-radius:12px;padding:26px 28px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.q-step h4{color:var(--gold-l);margin-bottom:14px}
+.q-btn{
+  display:block;width:100%;text-align:left;margin:8px 0;padding:12px 16px;
+  background:#14201a;color:var(--paper);border:1px solid #33493e;border-radius:8px;
+  font-family:inherit;font-size:15px;cursor:pointer;transition:.18s;
+}
+.q-btn:hover{border-color:var(--jade-l);background:#1a2b23}
+.q-btn.sel{background:var(--jade);border-color:var(--jade-l);color:#f2f7f0}
+.q-nav{margin-top:14px;text-align:right}
+.q-next{
+  background:var(--cinn);color:#f8ecd9;border:none;border-radius:20px;padding:9px 22px;
+  font-family:inherit;font-size:14.5px;cursor:pointer;
+}
+.q-next:disabled{opacity:.35;cursor:default}
+.q-result h4{color:var(--gold);font-size:19px;margin-bottom:10px}
+.q-restart{display:block;margin:16px auto 0;background:none;border:1px solid var(--jade-l);color:var(--jade-xl);border-radius:20px;padding:8px 20px;font-family:inherit;cursor:pointer}
+
+.cloud-line{opacity:.5;margin:26px auto;max-width:520px;display:block}
+.cloud-line svg{width:100%;height:34px}
+
+footer{text-align:center;padding:44px 20px 34px;border-top:1px solid #2a3f35;margin-top:30px}
+footer .f-cloud{width:120px;height:30px;opacity:.5;margin-bottom:12px}
+footer p{color:var(--jade-xl)}
+footer .f-small{font-size:13px;color:#7d9c8d;margin-top:6px}
+@media(max-width:640px){
+  .container{padding:0 14px}
+  header{padding:46px 16px 34px}
+  .bi{width:112px;height:112px;margin-bottom:16px}
+  .bi::after{inset:28px}
+  header .sub{font-size:15px}
+  .seal{font-size:12.5px;letter-spacing:.1em}
+
+  /* навигация: одна строка с горизонтальной прокруткой */
+  nav .tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 10px;scrollbar-width:none}
+  nav .tabs::-webkit-scrollbar{display:none}
+  .tab{font-size:13px;padding:6px 12px;flex:0 0 auto}
+
+  .panel{padding:30px 0 22px}
+  .sec-head{margin-bottom:20px}
+  .card{padding:16px 16px;border-left-width:3px}
+  .card h3{font-size:18px}
+
+  /* таблицы: аккуратная горизонтальная прокрутка, текст не ломается */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:13px;white-space:nowrap}
+  th,td{padding:7px 10px}
+  td{white-space:normal;min-width:110px}
+  th{min-width:90px}
+
+  .codeblock{font-size:12px;padding:12px 14px}
+  code{word-break:break-word}
+
+  .steps{grid-template-columns:1fr;gap:12px}
+  .chain{flex-direction:column;gap:8px}
+  .chain-step{width:100%}
+  .chain-arrow{transform:rotate(90deg)}
+
+  .quiz-box{padding:18px 16px}
+  .q-btn{font-size:14px;padding:11px 13px}
+}
+@media(max-width:380px){
+  .card{padding:13px 12px}
+  table{font-size:12.5px}
+}
+
+.lang-sep{flex-basis:1px;background:#2a3f35;margin:6px 8px;align-self:stretch}
+.lang-btn{font-size:13px;padding:6px 11px}
+body.lang-zh{font-family:Georgia,"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",serif}
+body.lang-zh code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Microsoft YaHei",monospace}
+</style>
+</head>
+<body>
+<svg height="0" style="position:absolute" width="0">
+<symbol id="cloud" viewbox="0 0 120 30">
+<path d="M6 22 q10 -16 22 -8 q4 -10 16 -8 q12 2 12 12 q10 -4 16 4 q6 8 -6 10 H14 q-14 0 -8 -10 Z" fill="none" stroke="#4b8a72" stroke-width="1.6"></path>
+<path d="M78 20 q8 -12 18 -6 q3 -8 13 -6 q9 2 8 10" fill="none" stroke="#b03a2e" stroke-width="1.3"></path>
+</symbol>
+</svg>
+<header>
+<div class="hd-clouds">
+<svg preserveaspectratio="none" viewbox="0 0 1200 110">
+<path d="M0 70 q60 -50 130 -20 q50 -60 140 -30 q70 -40 150 0 q90 -50 180 -10 q80 -40 170 10 q90 -50 180 0 q80 -30 150 20" fill="none" stroke="#2e6b57" stroke-width="2"></path>
+<path d="M60 95 q70 -40 140 -10 q60 -45 150 -15 q80 -35 160 5 q90 -40 170 0 q90 -35 160 10 q80 -25 150 15" fill="none" opacity=".7" stroke="#b03a2e" stroke-width="1.4"></path>
+</svg>
+</div>
+<div class="bi"></div>
+<h1 data-i18n="header.1"><span class="lotus">🪷</span> JADE IMMORTAL</h1>
+<p class="sub" data-i18n="header.2">интерактивный гайд по пресету и регексам для TavoAI</p>
+<div class="seal" data-i18n="header.3">碧玉长生 · by @floryhibi</div>
+</header>
+<div class="silk"></div>
+<nav>
+<div class="tabs container">
+<button class="tab act" data-i18n="nav.1" data-tab="overview">☯ Обзор</button>
+<button class="tab" data-i18n="nav.2" data-tab="core">🏯 Ядро</button>
+<button class="tab" data-i18n="nav.3" data-tab="world">🌏 Мир</button>
+<button class="tab" data-i18n="nav.4" data-tab="magic">✨ Магия</button>
+<button class="tab" data-i18n="nav.5" data-tab="relations">💞 Отношения</button>
+<button class="tab" data-i18n="nav.6" data-tab="ui">🎴 Плашки и регексы</button>
+<button class="tab" data-i18n="nav.7" data-tab="setup">🎚 Настройка</button>
+<button class="tab" data-i18n="nav.8" data-tab="quiz">🧭 Квиз</button>
+<button class="tab" data-i18n="nav.9" data-tab="tests">🩺 Диагностика</button>
+<button class="tab" data-i18n="nav.10" data-tab="custom">🛠 Кастомизация</button>
+<span class="lang-sep"></span>
+<button class="tab lang-btn act" data-lang="ru">RU</button>
+<button class="tab lang-btn" data-lang="en">EN</button>
+<button class="tab lang-btn" data-lang="zh">中文</button>
+</div>
+</nav>
+<main class="container">
+<section class="panel act" id="overview">
+<div class="sec-head">
+<span class="sec-num">壹 · yī</span>
+<h2 data-i18n="overview.1">Что такое Jade Immortal</h2>
+<p class="sec-sub" data-i18n="overview.2">Модульный пресет для ролевых игр в сеттинге сюаньсянь / древнего Китая: культивация, нефритовые дворы, интриги и судьба.</p>
+</div>
+<div class="card">
+<h3 data-i18n="overview.3">☯ Три столпа</h3>
+<ul class="dots">
+<li data-i18n="overview.4"><b>Живой мир</b> — NPC с собственной психикой, параллельные сцены, несправедливый мир, который не подстраивается под героя</li>
+<li data-i18n="overview.5"><b>Живая проза</b> — анти-клише, анти-эхо, обязательная «думалка», контроль темпа</li>
+<li data-i18n="overview.6"><b>Живая картинка</b> — компас состояния, панель отношений, событийные плашки и (опционально) генерация иллюстраций</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="overview.7">🗂 Пять слоёв пресета</h3>
+<table>
+<tr><th data-i18n="overview.8">Слой</th><th data-i18n="overview.9">Что внутри</th><th data-i18n="overview.10">По умолчанию</th></tr>
+<tr><td data-i18n="overview.11">🏯 Ядро</td><td data-i18n="overview.12">main, проза, язык, правила, NPC, психика, анти-ценз, анти-клише, анти-эхо, параллельные сцены, несправедливый мир</td><td class="on" data-i18n="overview.13">включено</td></tr>
+<tr><td data-i18n="overview.14">💞 Отношения</td><td data-i18n="overview.15">близость, пейсинг, slowburn / fastburn</td><td data-i18n="overview.16">близость + пейсинг <b>вкл</b>, темпы выкл</td></tr>
+<tr><td data-i18n="overview.17">🌏 Мир</td><td data-i18n="overview.18">6 модулей: локации, свитки, письма, досье, инвентарь, время/отношения</td><td class="on" data-i18n="overview.19">включено</td></tr>
+<tr><td data-i18n="overview.20">✨ Магия</td><td data-i18n="overview.21">21 модуль: гадания, ритуалы, талисманы, знамения, алхимия и др.</td><td class="off" data-i18n="overview.22">выключено</td></tr>
+<tr><td data-i18n="overview.23">🖼 Картинки</td><td data-i18n="overview.24">два движка (novel / banana) × вспышка, зеркало, момент</td><td class="off" data-i18n="overview.25">выключено</td></tr>
+</table>
+<p class="note" data-i18n="overview.26">Пресет модульный: включено только ядро и базовые отношения. Всё остальное — по вкусу, как специи. Квиз во вкладке 🧭 поможет собрать конфигурацию под себя.</p>
+</div>
+<div class="card">
+<h3 data-i18n="overview.27">📦 Комплект поставки</h3>
+<table>
+<tr><th data-i18n="overview.28">Файл</th><th data-i18n="overview.29">Содержимое</th></tr>
+<tr><td data-i18n="overview.30"><code>(пресет) 🪷 JADE IMMORTAL…json</code></td><td data-i18n="overview.31">83 промпта — вся логика пресета</td></tr>
+<tr><td data-i18n="overview.32"><code>(регекс) 🪷 JADE IMMORTAL…zip</code></td><td data-i18n="overview.33">18 текстовых регексов: все плашки, думалка, чистка следов</td></tr>
+<tr><td data-i18n="overview.34"><code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code></td><td data-i18n="overview.35">13 регексов генерации картинок: 3 провайдера (PROXY / NAISTERA / LINK)</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 data-i18n="overview.36">🧮 Базовая формула</h3>
+<div class="codeblock">
+<b>пресет</b> (ядро + модули по вкусу)<br/>
+        + <b>18 текстовых регексов</b> (обязательно все)<br/>
+        + <b>картиночные регексы</b> (опционально, одна группа провайдера)<br/>
+        = полноценный Jade Immortal 🪷
+    </div>
+<p class="note" data-i18n="overview.37">Базовая сборка ≈ <b>11k токенов</b> контекста. Самый тяжёлый модуль — 🏯 формат (~3k). Магия добавляет +150–400 токенов на модуль, картинки +600–900.</p>
+</div>
+</section>
+<section class="panel" id="core">
+<div class="sec-head">
+<span class="sec-num">贰 · èr</span>
+<h2 data-i18n="core.1">Ядро — всегда включено</h2>
+<p class="sec-sub" data-i18n="core.2">Эти системы — фундамент. Их отключение ломает задумку пресета.</p>
+</div>
+<div class="card">
+<h3 data-i18n="core.3">🏯 Обязательные системы</h3>
+<table>
+<tr><th data-i18n="core.4">Промпт</th><th data-i18n="core.5">За что отвечает</th></tr>
+<tr><td data-i18n="core.6">main</td><td data-i18n="core.7">Главная установка: роль, сеттинг, базовые законы поведения модели</td></tr>
+<tr><td data-i18n="core.8">проза</td><td data-i18n="core.9">Стиль письма: литературная проза, показывать-не-рассказывать</td></tr>
+<tr><td data-i18n="core.10">EN / RU</td><td data-i18n="core.11">Языковой блок: игра на русском или английском, значения плашек — на языке игры</td></tr>
+<tr><td data-i18n="core.12">user</td><td data-i18n="core.13">Обработка карточки пользователя и его действий</td></tr>
+<tr><td data-i18n="core.14">правила</td><td data-i18n="core.15">Законы мира: включая правило {{setvar}}/{{getvar}}, записанное человеческим языком</td></tr>
+<tr><td data-i18n="core.16">NPC</td><td data-i18n="core.17">Поведение второстепенных персонажей: собственные цели, реакции, память</td></tr>
+<tr><td data-i18n="core.18">несправедливый мир</td><td data-i18n="core.19">Мир не подыгрывает герою: последствия, цены, случайности</td></tr>
+<tr><td data-i18n="core.20">анти-ценз</td><td data-i18n="core.21">Смелые сцены без обрывов — но никогда вразрез с характером персонажа</td></tr>
+<tr><td data-i18n="core.22">анти-клише</td><td data-i18n="core.23">Запрет штампов и «пластиковых» реакций</td></tr>
+<tr><td data-i18n="core.24">анти-эхо</td><td data-i18n="core.25">Модель не повторяет твои формулировки и саму себя</td></tr>
+<tr><td data-i18n="core.26">скрытая психика</td><td data-i18n="core.27">Внутренний мир NPC: невысказанные мысли, мотивы, противоречия</td></tr>
+<tr><td data-i18n="core.28">параллельные сцены</td><td data-i18n="core.29">Meanwhile-врезки в другие места мира — никогда не перескакивая основную сцену по времени</td></tr>
+<tr><td data-i18n="core.30">формат / форма ответа</td><td data-i18n="core.31">Структура ответа: шапка JADE_STATUS → проза → JADE_BOND → (вспышка, если включена)</td></tr>
+<tr><td data-i18n="core.32">думалка</td><td data-i18n="core.33">Обязательные мысли персонажей в каждом ответе</td></tr>
+<tr><td data-i18n="core.34">префилл</td><td data-i18n="core.35">Начало ответа модели — задаёт тон и форму</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 data-i18n="core.36">📜 Ключевые законы (v1.1)</h3>
+<ul class="dots">
+<li data-i18n="core.37"><b>Правило релевантности</b> — модель отвечает на твоё <i>последнее</i> сообщение, а не на старые реплики</li>
+<li data-i18n="core.38"><b>Правило времени</b> — никаких таймскипов основной сцены; время движется только вперёд и только естественно</li>
+<li data-i18n="core.39"><b>Обязательная думалка</b> — мысли персонажа в каждом ответе, без пропусков</li>
+<li data-i18n="core.40"><b>Условная вспышка</b> — метка JADE_FLASH требуется только когда включён модуль вспышки; иначе метки нет и ничего не «протекает» в чат</li>
+<li data-i18n="core.41"><b>Характер прежде всего</b> — даже смелые сцены не ломают личность персонажа</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="core.42">💌 Про промпты-разделители</h3>
+<p data-i18n="core.43">В списке промптов встречаются «пустышки» вроде <code>💌🪷💌</code> — это визуальные разделители для удобной навигации по пресету. Они <b>всегда выключены</b> — так и задумано, не включай их.</p>
+</div>
+</section>
+<section class="panel" id="world">
+<div class="sec-head">
+<span class="sec-num">叁 · sān</span>
+<h2 data-i18n="world.1">Модули мира</h2>
+<p class="sec-sub" data-i18n="world.2">Шесть модулей, включённых по умолчанию — они наполняют игру событийными плашками.</p>
+</div>
+<div class="card">
+<h3 data-i18n="world.3">🌏 Шесть модулей (все включены)</h3>
+<table>
+<tr><th data-i18n="world.4">Модуль</th><th data-i18n="world.5">Метка</th><th data-i18n="world.6">Что делает</th></tr>
+<tr><td data-i18n="world.7">локации</td><td data-i18n="world.8"><code>[JADE_LOCATION]</code></td><td data-i18n="world.9">Карточка нового места при первом посещении</td></tr>
+<tr><td data-i18n="world.10">свитки</td><td data-i18n="world.11"><code>[JADE_SCROLL]</code></td><td data-i18n="world.12">Официальные документы: указы, записи, свитки</td></tr>
+<tr><td data-i18n="world.13">письма</td><td data-i18n="world.14"><code>[JADE_LETTER]</code></td><td data-i18n="world.15">Личные письма и записки</td></tr>
+<tr><td data-i18n="world.16">досье</td><td data-i18n="world.17"><code>[JADE_DOSSIER]</code></td><td data-i18n="world.18">Досье при знакомстве с новым значимым персонажем</td></tr>
+<tr><td data-i18n="world.19">инвентарь</td><td data-i18n="world.20"><code>[JADE_INVENTORY]</code></td><td data-i18n="world.21">Получение, потеря, трата предметов</td></tr>
+<tr><td data-i18n="world.22">время / отношения</td><td data-i18n="world.23"><code>[JADE_TIME]</code> / <code>[JADE_RELATION]</code></td><td data-i18n="world.24">Отсечки времени и сдвиги в отношениях NPC</td></tr>
+</table>
+<p class="note" data-i18n="world.25">Лимит: не больше <b>двух</b> событийных плашек за ответ. Модель сама выбирает самые важные события сцены.</p>
+</div>
+<div class="card">
+<h3 data-i18n="world.26">👥 NPC и параллельные сцены</h3>
+<ul class="dots">
+<li data-i18n="world.27">NPC живут своей жизнью: у них есть цели, слухи, настроение — они не «ждут» героя</li>
+<li data-i18n="world.28"><b>Параллельные сцены</b> — короткие meanwhile-врезки о том, что происходит в другом месте мира. Жёсткое правило: врезка никогда не сдвигает основную сцену по времени</li>
+<li data-i18n="world.29"><b>Несправедливый мир</b> — действия имеют цену, планы срываются, удача не гарантирована</li>
+</ul>
+</div>
+</section>
+<section class="panel" id="magic">
+<div class="sec-head">
+<span class="sec-num">肆 · sì</span>
+<h2 data-i18n="magic.1">Магические модули</h2>
+<p class="sec-sub" data-i18n="magic.2">21 модуль мистики и культивации. Все выключены по умолчанию — собери свой набор или возьми готовый режим.</p>
+</div>
+<div class="card">
+<h3 data-i18n="magic.3">✨ Все модули магии</h3>
+<table>
+<tr><th data-i18n="magic.4">Модуль</th><th data-i18n="magic.5">Метка / плашка</th><th data-i18n="magic.6">Эффект</th></tr>
+<tr><td data-i18n="magic.7">гадание</td><td data-i18n="magic.8"><code>[JADE_DIVINATION]</code></td><td data-i18n="magic.9">Гадания: палочки, гексаграммы, знаки судьбы</td></tr>
+<tr><td data-i18n="magic.10">ритуалы</td><td data-i18n="magic.11"><code>[JADE_RITUAL]</code></td><td data-i18n="magic.12">Ритуалы и церемонии</td></tr>
+<tr><td data-i18n="magic.13">талисманы</td><td data-i18n="magic.14"><code>[JADE_TALISMAN]</code></td><td data-i18n="magic.15">Создание и находка талисманов</td></tr>
+<tr><td data-i18n="magic.16">знамения</td><td data-i18n="magic.17"><code>[JADE_OMEN]</code></td><td data-i18n="magic.18">Предзнаменования, небесные знаки</td></tr>
+<tr><td data-i18n="magic.19">алхимия</td><td data-i18n="magic.20"><code>[JADE_ALCHEMY]</code></td><td data-i18n="magic.21">Пилюли, эликсиры, алхимические опыты</td></tr>
+<tr><td data-i18n="magic.22">остальные 16 модулей</td><td data-i18n="magic.23">—</td><td data-i18n="magic.24">Культивация, духовные корни, массивы, духи и т.д. — смотри список промптов в пресете</td></tr>
+</table>
+<p class="note" data-i18n="magic.25">Каждый модуль добавляет +150–400 токенов. Включай точечно: магия, которой нет в сюжете, только отвлекает модель.</p>
+</div>
+<div class="card">
+<h3 data-i18n="magic.26">🧩 Зависимости</h3>
+<ul class="dots">
+<li data-i18n="magic.27">Плашки магии требуют соответствующие регексы из текстового пакета (они в нём уже есть — ставь весь пакет целиком)</li>
+<li data-i18n="magic.28">Магические метки подчиняются общему лимиту: максимум 2 событийные плашки за ответ</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="magic.29">🏮 Четыре готовых режима</h3>
+<table>
+<tr><th data-i18n="magic.30">Режим</th><th data-i18n="magic.31">Что включить</th><th data-i18n="magic.32">Настроение</th></tr>
+<tr><td data-i18n="magic.33"><b>Земной</b></td><td data-i18n="magic.34">ничего из магии</td><td data-i18n="magic.35">Историческая драма, интриги, никакой мистики</td></tr>
+<tr><td data-i18n="magic.36"><b>Лёгкая мистика</b></td><td data-i18n="magic.37">гадание, знамения, талисманы</td><td data-i18n="magic.38">Фатализм, знаки судьбы, суеверия</td></tr>
+<tr><td data-i18n="magic.39"><b>Путь культивации</b></td><td data-i18n="magic.40">+ культивация, алхимия, ритуалы</td><td data-i18n="magic.41">Классическое сюаньсянь: рост силы, пилюли, прорывы</td></tr>
+<tr><td data-i18n="magic.42"><b>Путь бессмертного</b></td><td data-i18n="magic.43">все 21 модуль</td><td data-i18n="magic.44">Полный арсенал: духи, массивы, небеса и преисподняя</td></tr>
+</table>
+</div>
+</section>
+<section class="panel" id="relations">
+<div class="sec-head">
+<span class="sec-num">伍′ · отношения</span>
+<h2 data-i18n="relations.1">Отношения и темп</h2>
+<p class="sec-sub" data-i18n="relations.2">Близость и пейсинг работают всегда; медленный или быстрый роман — по желанию.</p>
+</div>
+<div class="card">
+<h3 data-i18n="relations.3">💞 Включено по умолчанию</h3>
+<table>
+<tr><th data-i18n="relations.4">Модуль</th><th data-i18n="relations.5">Статус</th><th data-i18n="relations.6">Что делает</th></tr>
+<tr><td data-i18n="relations.7">близость</td><td class="on" data-i18n="relations.8">вкл</td><td data-i18n="relations.9">Проработка близких сцен: эмоции, детали, согласие, характер</td></tr>
+<tr><td data-i18n="relations.10">пейсинг</td><td class="on" data-i18n="relations.11">вкл</td><td data-i18n="relations.12">Естественный темп развития отношений без рывков</td></tr>
+<tr><td data-i18n="relations.13">slowburn</td><td class="off" data-i18n="relations.14">выкл</td><td data-i18n="relations.15">Медленный роман в 15 стадий</td></tr>
+<tr><td data-i18n="relations.16">fastburn</td><td class="off" data-i18n="relations.17">выкл</td><td data-i18n="relations.18">Быстрая страсть</td></tr>
+</table>
+<div class="warn"><b>⛔ Slowburn и fastburn несовместимы</b> — это противоположные темпы. Включай максимум один из них (или ни одного — тогда действует нейтральный пейсинг).</div>
+</div>
+<div class="card">
+<h3 data-i18n="relations.19">🌸 Slowburn: 15 стадий</h3>
+<p data-i18n="relations.20">При включённом slowburn отношения проходят путь от первого взгляда до полной близости через 15 стадий: знакомство → любопытство → доверие → тепло → искра → томление → признание себе → первое касание → сближение → признание вслух → и далее до развязки. Модель ведёт счёт стадии и не перепрыгивает через этапы без серьёзного сюжетного основания.</p>
+<p class="note" data-i18n="relations.21">Если чувства «скачут» без причин — скорее всего, случайно включён fastburn или пейсинг выключен вручную.</p>
+</div>
+</section>
+<section class="panel" id="ui">
+<div class="sec-head">
+<span class="sec-num">伍 · wǔ</span>
+<h2 data-i18n="ui.1">Плашки и регулярные выражения</h2>
+<p class="sec-sub" data-i18n="ui.2">Вся красота Jade Immortal живёт в регексах. Пресет заставляет модель оставлять текстовые метки — регексы превращают их в карточки.</p>
+</div>
+<div class="card">
+<h3 data-i18n="ui.3">☯ Как это работает</h3>
+<div class="chain">
+<span class="chain-step">Пресет просит метку<br/><code>[JADE_STATUS]…[/JADE_STATUS]</code></span>
+<span class="chain-arrow">→</span>
+<span class="chain-step">Модель пишет её в ответе</span>
+<span class="chain-arrow">→</span>
+<span class="chain-step">Регекс ловит метку и рисует плашку</span>
+</div>
+<p class="note" data-i18n="ui.4">Поэтому <b>пресет без регексов показывает сырые метки</b>, а регексы без пресета не ловят ничего. Они работают только вместе. Если видишь в чате сырой текст вроде <code>[JADE_FLASH: …]</code> — значит включён модуль, для которого не установлен (или выключен) парный регекс.</p>
+</div>
+<div class="card">
+<h3 data-i18n="ui.5">📌 Постоянные плашки (в каждом ответе)</h3>
+<table>
+<tr><th data-i18n="ui.6">Метка</th><th data-i18n="ui.7">Регекс</th><th data-i18n="ui.8">Что показывает</th><th data-i18n="ui.9">Когда появляется</th></tr>
+<tr><td data-i18n="ui.10"><code>[JADE_STATUS]</code></td><td data-i18n="ui.11">шапка</td><td data-i18n="ui.12">Компас: локация, время, погода, дата, день, настроение, одежда, поза</td><td data-i18n="ui.13"><b>Всегда</b>, в начале ответа</td></tr>
+<tr><td data-i18n="ui.14"><code>[JADE_BOND]</code></td><td data-i18n="ui.15">связь</td><td data-i18n="ui.16">Панель отношений: ползунки чувств, «кольца», состояние ума НПС</td><td data-i18n="ui.17"><b>Всегда</b>, в конце ответа</td></tr>
+<tr><td data-i18n="ui.18"><code>[JADE_FLASH: …]</code></td><td data-i18n="ui.19">вспышка*</td><td data-i18n="ui.20">Карточка со сгенерированной картинкой (или стильная заглушка)</td><td data-i18n="ui.21">Только если включён модуль вспышки</td></tr>
+</table>
+<p class="note" data-i18n="ui.22">* В v1.1 исправлено: пресет требует <code>JADE_FLASH</code> лишь при активном модуле вспышки. Раньше метка требовалась всегда — и при выключенных картинках «протекала» в чат сырым текстом.</p>
+</div>
+<div class="card">
+<h3 data-i18n="ui.23">🗂 Поля компаса JADE_STATUS</h3>
+<p data-i18n="ui.24">Модель заполняет 8 полей. Значения — <b>коротко, по-русски</b> (в EN-режиме — по-английски), иначе строка переполняется:</p>
+<table>
+<tr><th data-i18n="ui.25">Поле</th><th data-i18n="ui.26">Пример</th><th data-i18n="ui.27">Примечание</th></tr>
+<tr><td data-i18n="ui.28">Локация</td><td data-i18n="ui.29">горный монастырь</td><td data-i18n="ui.30">2–4 слова, без предложений</td></tr>
+<tr><td data-i18n="ui.31">Время</td><td data-i18n="ui.32">рассвет</td><td data-i18n="ui.33">одно слово / короткая фраза</td></tr>
+<tr><td data-i18n="ui.34">Погода</td><td data-i18n="ui.35">лёгкий туман</td><td data-i18n="ui.36">короткая фраза</td></tr>
+<tr><td data-i18n="ui.37">Дата</td><td data-i18n="ui.38">3-й день месяца обезьяны</td><td data-i18n="ui.39">китайский календарный стиль</td></tr>
+<tr><td data-i18n="ui.40">День истории</td><td data-i18n="ui.41">день 12</td><td data-i18n="ui.42">счётчик от начала игры</td></tr>
+<tr><td data-i18n="ui.43">Настроение НПС</td><td data-i18n="ui.44">настороженное спокойствие</td><td data-i18n="ui.45">про активного собеседника</td></tr>
+<tr><td data-i18n="ui.46">Одежда</td><td data-i18n="ui.47">серый ханьфу, нефритовый пояс</td><td data-i18n="ui.48">кратко</td></tr>
+<tr><td data-i18n="ui.49">Поза</td><td data-i18n="ui.50">сидит подобрав ноги</td><td data-i18n="ui.51">кратко</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 data-i18n="ui.52">💞 Панель JADE_BOND</h3>
+<p data-i18n="ui.53">Закрывает каждый ответ. Модель сама обновляет цифры по ходу сцены:</p>
+<ul class="dots">
+<li data-i18n="ui.54"><b>Ползунки чувств</b> — доверие, симпатия, влечение, уважение и т.п. (0–100)</li>
+<li data-i18n="ui.55"><b>Кольца</b> — круговые индикаторы ключевых метрик</li>
+<li data-i18n="ui.56"><b>Состояние ума</b> — короткая строка «что сейчас в голове» у активного НПС</li>
+</ul>
+<p class="note" data-i18n="ui.57">Если панель «скачет» без причин — смотри раздел диагностики: обычно это следствие слишком агрессивного темпа или того, что включён fastburn.</p>
+</div>
+<div class="card">
+<h3 data-i18n="ui.58">⚡ Событийные метки (не чаще двух за ответ)</h3>
+<p data-i18n="ui.59">Модель ставит их только когда в сцене правда происходит событие. Каждой метке соответствует модуль пресета и регекс:</p>
+<table>
+<tr><th data-i18n="ui.60">Метка</th><th data-i18n="ui.61">Модуль</th><th data-i18n="ui.62">Что рисует</th></tr>
+<tr><td data-i18n="ui.63"><code>[JADE_SCROLL]</code></td><td data-i18n="ui.64">мир · свитки</td><td data-i18n="ui.65">Свиток с текстом указов, записок, записей</td></tr>
+<tr><td data-i18n="ui.66"><code>[JADE_LETTER]</code></td><td data-i18n="ui.67">мир · письма</td><td data-i18n="ui.68">Личное письмо / записку</td></tr>
+<tr><td data-i18n="ui.69"><code>[JADE_DOSSIER]</code></td><td data-i18n="ui.70">мир · досье</td><td data-i18n="ui.71">Досье на персонажа (при знакомстве)</td></tr>
+<tr><td data-i18n="ui.72"><code>[JADE_LOCATION]</code></td><td data-i18n="ui.73">мир · локации</td><td data-i18n="ui.74">Карточку нового места</td></tr>
+<tr><td data-i18n="ui.75"><code>[JADE_RELATION]</code></td><td data-i18n="ui.76">мир · отношения</td><td data-i18n="ui.77">Изменение отношения НПС</td></tr>
+<tr><td data-i18n="ui.78"><code>[JADE_INVENTORY]</code></td><td data-i18n="ui.79">мир · инвентарь</td><td data-i18n="ui.80">Получение/потерю предмета</td></tr>
+<tr><td data-i18n="ui.81"><code>[JADE_TIME]</code></td><td data-i18n="ui.82">мир · время</td><td data-i18n="ui.83">Отсечку времени («прошло три дня»)</td></tr>
+<tr><td data-i18n="ui.84"><code>[JADE_DIVINATION]</code></td><td data-i18n="ui.85">магия · гадание</td><td data-i18n="ui.86">Результат гадания</td></tr>
+<tr><td data-i18n="ui.87"><code>[JADE_RITUAL]</code></td><td data-i18n="ui.88">магия · ритуалы</td><td data-i18n="ui.89">Карточку ритуала</td></tr>
+<tr><td data-i18n="ui.90"><code>[JADE_TALISMAN]</code></td><td data-i18n="ui.91">магия · талисманы</td><td data-i18n="ui.92">Созданный/найденный талисман</td></tr>
+<tr><td data-i18n="ui.93"><code>[JADE_OMEN]</code></td><td data-i18n="ui.94">магия · знамения</td><td data-i18n="ui.95">Знамение / предзнаменование</td></tr>
+<tr><td data-i18n="ui.96"><code>[JADE_ALCHEMY]</code></td><td data-i18n="ui.97">магия · алхимия</td><td data-i18n="ui.98">Пилюлю / результат алхимии</td></tr>
+<tr><td data-i18n="ui.99"><code>[JADE_MOMENT: …]</code></td><td data-i18n="ui.100">картинки · момент</td><td data-i18n="ui.101">Картинку ключевого момента сцены</td></tr>
+<tr><td data-i18n="ui.102"><code>[JADE_FLASH: …]</code></td><td data-i18n="ui.103">картинки · вспышка</td><td data-i18n="ui.104">Картинку-«вспышку» в конце ответа</td></tr>
+</table>
+<p class="note" data-i18n="ui.105">Зеркало (<code>JADE_MIRROR</code>) — особый случай: рисует «портрет» героя/НПС и вызывается отдельным блоком картиночных модулей.</p>
+</div>
+<div class="card">
+<h3 data-i18n="ui.106">🧵 Пак 1 — текстовые регексы (18 штук)</h3>
+<p data-i18n="ui.107">Файл <code>(регекс) 🪷 JADE IMMORTAL by @floryhibi.zip</code>. Ставь <b>весь пакет</b> — они покрывают все текстовые плашки. Иконки шапки тянутся с CDN (jsdelivr), лишний трафик минимальный.</p>
+<table>
+<tr><th data-i18n="ui.108">Группа</th><th data-i18n="ui.109">Регексы</th></tr>
+<tr><td data-i18n="ui.110">Постоянные</td><td data-i18n="ui.111">шапка (JADE_STATUS), связь (JADE_BOND)</td></tr>
+<tr><td data-i18n="ui.112">Думалка</td><td data-i18n="ui.113">2 регекса: оформление мыслей персонажа</td></tr>
+<tr><td data-i18n="ui.114">Событийные</td><td data-i18n="ui.115">свиток, письмо, досье, локация, отношение, инвентарь, время</td></tr>
+<tr><td data-i18n="ui.116">Магические</td><td data-i18n="ui.117">гадание, ритуал, талисман, знамение, алхимия</td></tr>
+<tr><td data-i18n="ui.118">Служебные</td><td data-i18n="ui.119">🧹 чистка следов — убирает «осиротевшие» метки картинок (стоит последним, идёт ПОСЛЕ картиночных регексов)</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 data-i18n="ui.120">🖼 Пак 2 — картиночные регексы (13 штук)</h3>
+<p data-i18n="ui.121">Файл <code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code>. Внутри — <b>три группы по провайдерам</b>, из каждой группы включён <b>только один</b> комплект:</p>
+<table>
+<tr><th data-i18n="ui.122">Группа</th><th data-i18n="ui.123">Для кого</th><th data-i18n="ui.124">Что вставить</th></tr>
+<tr><td data-i18n="ui.125"><b>PROXY</b></td><td data-i18n="ui.126">У тебя есть свой прокси для генерации</td><td data-i18n="ui.127">URL прокси + токен + стиль (в полях регексов, помечены ⬇️вставить⬇️)</td></tr>
+<tr><td data-i18n="ui.128"><b>NAISTERA</b></td><td data-i18n="ui.129">Генерация через бота @naistera_blocks_bot</td><td data-i18n="ui.130">Токен от бота + стиль</td></tr>
+<tr><td data-i18n="ui.131"><b>LINK</b></td><td data-i18n="ui.132">Генерация через LinkAPI</td><td data-i18n="ui.133">Токен LinkAPI (endpoint <code>https://api.linkapi.ai/v1beta</code> и модель <code>gemini-3.1-flash-image-c</code> уже прописаны)</td></tr>
+</table>
+<p data-i18n="ui.134">В каждой группе — по три регекса: <b>ВСПЫШКА</b>, <b>ЗЕРКАЛО</b>, <b>МОМЕНТ</b> + файл-пояснение и заметки «⬇️вставить⬇️» с точными местами для токенов.</p>
+<div class="warn">
+<b>⚠️ Два важных правила:</b>
+<ul class="dots">
+<li data-i18n="ui.135">Включаешь ровно <b>одну</b> группу провайдера. Две группы сразу = двойные запросы и сломанная разметка.</li>
+<li data-i18n="ui.136">Никогда не публикуй и не пересылай регексы с уже вписанным токеном. Токен — только на твоём устройстве.</li>
+</ul>
+</div>
+<p class="note" data-i18n="ui.137">Картиночный движок выбирается в пресете: <b>⬇️novel⬇️</b> (теговый, в стиле NovelAI) или <b>⬇️banana⬇️</b> (описания естественным языком). Подробности — во вкладке «Настройка».</p>
+</div>
+</section>
+<section class="panel" id="setup">
+<div class="sec-head">
+<span class="sec-num">陆 · liù</span>
+<h2 data-i18n="setup.1">Установка и настройка</h2>
+<p class="sec-sub" data-i18n="setup.2">От скачанных файлов до первого ответа — три шага.</p>
+</div>
+<div class="steps">
+<div class="step" data-i18n="setup.3"><span class="step-n">一</span>
+<h4>Импортируй пресет</h4>
+<p>TavoAI → Пресеты → импорт JSON <code>(пресет) 🪷 JADE IMMORTAL…</code>. Всё уже расставлено: ядро включено, модули выключены.</p>
+</div>
+<div class="step" data-i18n="setup.4"><span class="step-n">二</span>
+<h4>Импортируй регексы</h4>
+<p>Regex → импорт всех 18 файлов текстового пакета. Если нужны картинки — добавь 13 файлов картиночного пакета и включи <b>одну</b> группу провайдера, вписав токен в места ⬇️вставить⬇️.</p>
+</div>
+<div class="step" data-i18n="setup.5"><span class="step-n">三</span>
+<h4>Проверь порядок</h4>
+<p>Регекс <code>🧹 чистка следов</code> должен стоять <b>последним</b> в списке — после всех картиночных. Он подметает метки, которые не поймал ни один регекс.</p>
+</div>
+</div>
+<div class="card">
+<h3 data-i18n="setup.6">🏯 Конфигурация по умолчанию (v4)</h3>
+<table>
+<tr><th data-i18n="setup.7">Слой</th><th data-i18n="setup.8">Состояние</th><th data-i18n="setup.9">Что входит</th></tr>
+<tr><td data-i18n="setup.10">Ядро</td><td class="on" data-i18n="setup.11">включено</td><td data-i18n="setup.12">main, проза, RU/EN, user, правила, NPC, несправедливый мир, анти-ценз, анти-клише, анти-эхо, скрытая психика, параллельные сцены</td></tr>
+<tr><td data-i18n="setup.13">Отношения</td><td class="on" data-i18n="setup.14">включено</td><td data-i18n="setup.15">близость, пейсинг</td></tr>
+<tr><td data-i18n="setup.16">Мир</td><td class="on" data-i18n="setup.17">включено</td><td data-i18n="setup.18">все 6 модулей мира</td></tr>
+<tr><td data-i18n="setup.19">Форма</td><td class="on" data-i18n="setup.20">включено</td><td data-i18n="setup.21">формат, форма ответа, думалка, префилл</td></tr>
+<tr><td data-i18n="setup.22">Магия</td><td class="off" data-i18n="setup.23">выключено</td><td data-i18n="setup.24">все 21 модуль — включай по вкусу</td></tr>
+<tr><td data-i18n="setup.25">Темп</td><td class="off" data-i18n="setup.26">выключено</td><td data-i18n="setup.27">slowburn / fastburn — по умолчанию нейтральный пейсинг</td></tr>
+<tr><td data-i18n="setup.28">Диалоги</td><td class="off" data-i18n="setup.29">выключено</td><td data-i18n="setup.30">оба модуля диалогов</td></tr>
+<tr><td data-i18n="setup.31">Длина</td><td class="off" data-i18n="setup.32">выключено</td><td data-i18n="setup.33">все модули длины</td></tr>
+<tr><td data-i18n="setup.34">Картинки</td><td class="off" data-i18n="setup.35">выключено</td><td data-i18n="setup.36">обе группы novel и banana</td></tr>
+</table>
+<p class="note" data-i18n="setup.37">Базовая сборка ≈ <b>11k токенов</b> (самый тяжёлый — модуль 🏯 формат, ~3k). Магия добавляет +150–400 на модуль, картинки +600–900.</p>
+</div>
+<div class="card">
+<h3 data-i18n="setup.38">🎚 Безопасные переключатели</h3>
+<ul class="dots">
+<li data-i18n="setup.39"><b>Хочу картинки:</b> выбери движок — включи группу ⬇️novel⬇️ (теги) ИЛИ ⬇️banana⬇️ (естественный язык), внутри — вспышка/зеркало/момент по вкусу. Плюс парная группа регексов.</li>
+<li data-i18n="setup.40"><b>Хочу медленный роман:</b> включи slowburn (15 стадий). Fastburn при этом держи выключенным.</li>
+<li data-i18n="setup.41"><b>Хочу магию:</b> начни с готового режима из вкладки «Магия» — там уже собраны совместимые наборы.</li>
+<li data-i18n="setup.42"><b>Мало токенов:</b> первым делом выключи «несправедливый мир» и «параллельные сцены», затем часть модулей мира.</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="setup.43">⛔ Конфликты — что нельзя включать вместе</h3>
+<table>
+<tr><th data-i18n="setup.44">Пара</th><th data-i18n="setup.45">Почему</th></tr>
+<tr><td data-i18n="setup.46">slowburn + fastburn</td><td data-i18n="setup.47">Противоположные темпы отношений — модель начнёт метаться</td></tr>
+<tr><td data-i18n="setup.48">⬇️novel⬇️ + ⬇️banana⬇️</td><td data-i18n="setup.49">Два разных синтаксиса промптов для картинок — конфликт форматов</td></tr>
+<tr><td data-i18n="setup.50">Две группы картиночных регексов (PROXY/NAISTERA/LINK)</td><td data-i18n="setup.51">Двойная генерация и битая разметка</td></tr>
+<tr><td data-i18n="setup.52">Несколько модулей длины</td><td data-i18n="setup.53">Взаимоисключающие требования к объёму ответа</td></tr>
+</table>
+</div>
+</section>
+<section class="panel" id="quiz">
+<div class="sec-head">
+<span class="sec-num">柒 · qī</span>
+<h2 data-i18n="quiz.1">Квиз: собери свою конфигурацию</h2>
+<p class="sec-sub" data-i18n="quiz.2">Пять вопросов — и готовый список тоглов под твой стиль игры.</p>
+</div>
+<div class="quiz-box" id="quizBox">
+<div class="q-step" data-step="1">
+<h4 data-i18n="quiz.3">1/5 · Какой темп истории тебе ближе?</h4>
+<button class="q-btn" data-i18n="quiz.4" onclick="pick(this,'tempo','slow')">Медленное тление — взгляды, намёки, долгий путь</button>
+<button class="q-btn" data-i18n="quiz.5" onclick="pick(this,'tempo','neutral')">Нейтральный — как пойдёт</button>
+<button class="q-btn" data-i18n="quiz.6" onclick="pick(this,'tempo','fast')">Быстро и горячо — страсть с первых сцен</button>
+<div class="q-nav"><button class="q-next" data-i18n="quiz.7" disabled="" onclick="step(2)">далее →</button></div>
+</div>
+<div class="q-step" data-step="2" hidden="">
+<h4 data-i18n="quiz.8">2/5 · Нужны ли картинки в ответах?</h4>
+<button class="q-btn" data-i18n="quiz.9" onclick="pick(this,'img','off')">Нет, только текст</button>
+<button class="q-btn" data-i18n="quiz.10" onclick="pick(this,'img','on')">Да, хочу иллюстрации</button>
+<div class="q-nav"><button class="q-next" data-i18n="quiz.11" disabled="" onclick="step(3)">далее →</button></div>
+</div>
+<div class="q-step" data-step="3" hidden="">
+<h4 data-i18n="quiz.12">3/5 · Если картинки — какой движок промптов?</h4>
+<button class="q-btn" data-i18n="quiz.13" onclick="pick(this,'engine','novel')">NovelAI-стиль: теги через запятую</button>
+<button class="q-btn" data-i18n="quiz.14" onclick="pick(this,'engine','banana')">Естественный язык (banana)</button>
+<button class="q-btn" data-i18n="quiz.15" onclick="pick(this,'engine','skip')">Пропустить — картинки не нужны</button>
+<div class="q-nav"><button class="q-next" data-i18n="quiz.16" disabled="" onclick="step(4)">далее →</button></div>
+</div>
+<div class="q-step" data-step="4" hidden="">
+<h4 data-i18n="quiz.17">4/5 · Чем будешь генерировать? (провайдер)</h4>
+<button class="q-btn" data-i18n="quiz.18" onclick="pick(this,'provider','proxy')">Свой прокси</button>
+<button class="q-btn" data-i18n="quiz.19" onclick="pick(this,'provider','naistera')">Бот @naistera_blocks_bot</button>
+<button class="q-btn" data-i18n="quiz.20" onclick="pick(this,'provider','link')">LinkAPI</button>
+<button class="q-btn" data-i18n="quiz.21" onclick="pick(this,'provider','skip')">Пропустить</button>
+<div class="q-nav"><button class="q-next" data-i18n="quiz.22" disabled="" onclick="step(5)">далее →</button></div>
+</div>
+<div class="q-step" data-step="5" hidden="">
+<h4 data-i18n="quiz.23">5/5 · Магия и мистика?</h4>
+<button class="q-btn" data-i18n="quiz.24" onclick="pick(this,'magic','off')">Земная история, без магии</button>
+<button class="q-btn" data-i18n="quiz.25" onclick="pick(this,'magic','light')">Лёгкая мистика — гадания, знамения</button>
+<button class="q-btn" data-i18n="quiz.26" onclick="pick(this,'magic','full')">Полный культиваторский арсенал</button>
+<div class="q-nav"><button class="q-next" data-i18n="quiz.27" disabled="" onclick="showResult()">результат ✦</button></div>
+</div>
+<div class="q-result" hidden="" id="quizResult"></div>
+<button class="q-restart" data-i18n="quiz.28" hidden="" id="quizRestart" onclick="restart()">↺ пройти заново</button>
+</div>
+</section>
+<section class="panel" id="tests">
+<div class="sec-head">
+<span class="sec-num">捌 · bā</span>
+<h2 data-i18n="tests.1">Мини-тесты и диагностика</h2>
+<p class="sec-sub" data-i18n="tests.2">Проверки после установки и таблица «симптом → лечение».</p>
+</div>
+<div class="card">
+<h3 data-i18n="tests.3">🧪 Три мини-теста после установки</h3>
+<ol class="nums">
+<li data-i18n="tests.4"><b>Компас.</b> Отправь любое сообщение. В начале ответа должна быть шапка JADE_STATUS (не сырой текст!), в конце — панель JADE_BOND. Если видишь <code>[JADE_STATUS]</code> как текст — текстовые регексы не импортированы или выключены.</li>
+<li data-i18n="tests.5"><b>Событие.</b> Напиши: «мне вручают письмо от наставника». Должна появиться карточка письма. Не чаще двух событийных плашек за ответ — это норма.</li>
+<li data-i18n="tests.6"><b>Картинка</b> (если включена): попроси «покажи, как выглядит героиня». Должна сработать вспышка/зеркало с картинкой или аккуратной заглушкой — но не сырой <code>[JADE_FLASH: …]</code>.</li>
+</ol>
+</div>
+<div class="card">
+<h3 data-i18n="tests.7">🩺 Диагностика: симптом → причина → лечение</h3>
+<table>
+<tr><th data-i18n="tests.8">Симптом</th><th data-i18n="tests.9">Причина</th><th data-i18n="tests.10">Лечение</th></tr>
+<tr><td data-i18n="tests.11">Сырой <code>[JADE_*]</code> текст в чате</td><td data-i18n="tests.12">Модуль включён, парный регекс — нет (или выключен)</td><td data-i18n="tests.13">Импортируй/включи регекс; проверь, что 🧹 чистка следов активна и стоит последней</td></tr>
+<tr><td data-i18n="tests.14"><code>[JADE_FLASH]</code> виден после перегенерации ответа</td><td data-i18n="tests.15">Старая версия пресета требовала FLASH всегда</td><td data-i18n="tests.16">Обновись на v1.1 — теперь FLASH требуется только при активной вспышке</td></tr>
+<tr><td data-i18n="tests.17">Текст в шапке обрезан/наезжает</td><td data-i18n="tests.18">Модель пишет длинные значения полей</td><td data-i18n="tests.19">В v1.1 регекс шапки ограничивает высоту; также правило «короткие значения» прописано в пресете — перегенерируй ответ</td></tr>
+<tr><td data-i18n="tests.20">Шапка на английском при русской игре</td><td data-i18n="tests.21">Старая версия не фиксировала язык значений</td><td data-i18n="tests.22">v1.1: значения идут на языке игры. Обнови пресет</td></tr>
+<tr><td data-i18n="tests.23">Модель отвечает на старое сообщение, а не на последнее</td><td data-i18n="tests.24">Длинный контекст сбивает фокус</td><td data-i18n="tests.25">В v1.1 добавлено правило релевантности; если повторяется — удали часть старой переписки</td></tr>
+<tr><td data-i18n="tests.26">Модель делает скачки во времени</td><td data-i18n="tests.27">—</td><td data-i18n="tests.28">Запрещено в v1.1 (правило времени + параллельные сцены без таймскипов основной линии). Обнови пресет</td></tr>
+<tr><td data-i18n="tests.29">Думалка пропадает</td><td data-i18n="tests.30">Старая формулировка была «мягкой»</td><td data-i18n="tests.31">v1.1: думалка обязательна (MANDATORY). Обнови пресет</td></tr>
+<tr><td data-i18n="tests.32">Картинки не генерируются, но плашка-заглушка есть</td><td data-i18n="tests.33">Не вписан токен / неверный URL провайдера</td><td data-i18n="tests.34">Проверь места ⬇️вставить⬇️ в картиночных регексах выбранной группы</td></tr>
+<tr><td data-i18n="tests.35">Двойные картинки / битая разметка</td><td data-i18n="tests.36">Включены две группы провайдеров</td><td data-i18n="tests.37">Оставь одну: PROXY, NAISTERA или LINK</td></tr>
+<tr><td data-i18n="tests.38">Ответы «поплыли», странное поведение</td><td data-i18n="tests.39">Конфликт модулей (slowburn+fastburn, два модуля длины)</td><td data-i18n="tests.40">Сверься с таблицей конфликтов во вкладке «Настройка»</td></tr>
+<tr><td data-i18n="tests.41">Ответы обрезаются</td><td data-i18n="tests.42">Не хватает max tokens в настройках API</td><td data-i18n="tests.43">Подними лимит токенов ответа; базовая сборка просит ~2k на ответ</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 data-i18n="tests.44">📜 Что изменилось в v1.1</h3>
+<ul class="dots">
+<li data-i18n="tests.45">JADE_FLASH требуется только при включённой вспышке — сырые метки при выключенных картинках исчезли</li>
+<li data-i18n="tests.46">Новый регекс 🧹 чистка следов — подметает осиротевшие метки картинок</li>
+<li data-i18n="tests.47">Шапка: короткие значения на языке игры + защита от переполнения в регексе</li>
+<li data-i18n="tests.48">Думалка стала обязательной; добавлены правило релевантности (ответ на последнее сообщение) и запрет таймскипов</li>
+<li data-i18n="tests.49">Смягчены формулировки анти-ценза и префилла («never break character's personality»)</li>
+<li data-i18n="tests.50">Правило {{setvar}}/{{getvar}} переписано человеческим языком</li>
+</ul>
+</div>
+</section>
+<section class="panel" id="custom">
+<div class="sec-head">
+<span class="sec-num">玖 · jiǔ</span>
+<h2 data-i18n="custom.1">Кастомизация: убрать лишнее и переделать под себя</h2>
+<p class="sec-sub" data-i18n="custom.2">Пресет модульный: почти всё можно выключить, убрать или переписать. Здесь — три уровня вмешательства и границы, за которые лучше не заходить.</p>
+</div>
+<div class="card">
+<h3 data-i18n="custom.3">🎚 Уровень 1 — тогглы (безопасно)</h3>
+<p data-i18n="custom.4">Самый простой способ «убрать то, чем не пользуешься» — выключить модуль прямо в списке промптов пресета. Ничего не удаляется и не ломается: выключенный тоггл просто не попадает в контекст.</p>
+<ul class="dots">
+<li data-i18n="custom.5">Не нужен конкретный модуль магии (гадание, алхимия, ритуалы, талисманы) — выключи его тоггл. Заодно можно выключить и парную плашку (см. уровень 2).</li>
+<li data-i18n="custom.6">Не нужны модули мира (NPC, параллельные сцены) — выключи, ядро продолжит работать.</li>
+<li data-i18n="custom.7">Не нравится событийная метка — выключи её промпт-требование и регекс.</li>
+<li data-i18n="custom.8">Перед большими правками сделай копию пресета под другим именем — откат займёт секунды.</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="custom.9">🎴 Уровень 2 — убрать плашку целиком</h3>
+<p data-i18n="custom.10">Плашка живёт в трёх местах, и убирать её надо согласованно, иначе модель будет выдавать метку, которую некому рендерить (или наоборот):</p>
+<ul class="dots">
+<li data-i18n="custom.11"><b>1. Регекс.</b> Отключи (или удали) регекс плашки в текстовом паке. Если у неё есть картиночный аналог (зеркало / момент / вспышка) — отключи и его во втором паке.</li>
+<li data-i18n="custom.12"><b>2. Требование метки.</b> В промпте формата вывода убери строку, которая требует выводить эту метку (например, упоминание <code>[JADE_FLASH]</code> или <code>[JADE_MIRROR]</code>).</li>
+<li data-i18n="custom.13"><b>3. Описания.</b> Если метка описана в справочных промптах (список меток, правила «не чаще двух за ответ») — убери её оттуда, чтобы модель о ней не вспоминала.</li>
+</ul>
+<div class="note" data-i18n="custom.14">Постоянные плашки ядра (<code>[JADE_STATUS]</code>, <code>[JADE_BOND]</code>, время) лучше не трогать — на них завязана логика состояния. Но если очень хочется, убираются они по той же схеме из трёх шагов.</div>
+</div>
+<div class="card">
+<h3 data-i18n="custom.15">✏️ Уровень 3 — изменить содержимое</h3>
+<ul class="dots">
+<li data-i18n="custom.16"><b>Стадии отношений.</b> Лестница бонда (Strangers → … → Bound / 陌路 → … → 同心) описана в промпте связи и продублирована в регексе панели. Менять нужно в <b>обоих</b> местах: слова в промпте — что пишет модель, слова в регексе — что отобразится на шкале.</li>
+<li data-i18n="custom.17"><b>Цвета и шрифты плашек.</b> В начале <code>replaceString</code> каждого регекса — блок CSS-переменных и <code>font-family</code>. Меняй значения там; структуру HTML не трогай, если не уверена.</li>
+<li data-i18n="custom.18"><b>Темп и длина.</b> Требования к длине ответа, пейсингу и slowburn-стадиям — обычные текстовые правила в своих промптах; переписывай формулировки как угодно.</li>
+<li data-i18n="custom.19"><b>Тексты и примеры.</b> Любые описания, примеры мыслей, формулировки законов — свободно редактируются, это обычный текст промпта.</li>
+</ul>
+</div>
+<div class="card warn">
+<h3 data-i18n="custom.20">⛔ Чего делать НЕЛЬЗЯ</h3>
+<ul class="dots">
+<li data-i18n="custom.21"><b>Не переименовывай ключи маркеров</b> (<code>uroven</code>, <code>procent</code>, <code>nezhnost</code> и т.д.). Они захардкожены в регексах — переименуешь в промпте, и панель перестанет заполняться. Ключи остаются латиницей всегда.</li>
+<li data-i18n="custom.22"><b>Не переименовывай сами метки</b> (<code>[JADE_STATUS]</code>, <code>[JADE_BOND]</code>…) — регексы ищут именно эти строки.</li>
+<li data-i18n="custom.23"><b>Не меняй порядок регексов внутри пака</b> — они выполняются по очереди, и порядок имеет значение (например, чистка следов идёт последней).</li>
+<li data-i18n="custom.24"><b>Не удаляй регекс 🧹 чистки</b> — он подметает осиротевшие метки картинок; без него в чате останется мусор.</li>
+<li data-i18n="custom.25"><b>Не трогай <code>findRegex</code>, если не уверена в синтаксисе</b> — одна лишняя скобка, и плашка перестанет появляться. Сначала копия, потом правка.</li>
+</ul>
+</div>
+<div class="card">
+<h3 data-i18n="custom.26">🧭 «Хочу…» → «что сделать»</h3>
+<ul class="dots">
+<li data-i18n="custom.27">«Мне не нужна алхимия» → выключи тоггл алхимии + регекс ⚗️ алхимия + строку метки в формате.</li>
+<li data-i18n="custom.28">«Хочу другие названия стадий отношений» → правь список в промпте связи и лестницу в регексе 🪷 связь (оба места!).</li>
+<li data-i18n="custom.29">«Плашка слишком яркая / другой цвет» → CSS-переменные в начале <code>replaceString</code> её регекса.</li>
+<li data-i18n="custom.30">«Ответы слишком длинные» → правь правила длины в промптах прозы/формата.</li>
+<li data-i18n="custom.31">«Не нужны картинки вообще» → выключи весь второй пак регексов и промпты зеркала/момента/вспышки.</li>
+<li data-i18n="custom.32">«Хочу свою плашку» → скопируй существующий регекс как шаблон, придумай новую метку <code>[JADE_...]</code>, добавь требование метки в формат и поставь регекс перед чисткой.</li>
+</ul>
+<div class="note" data-i18n="custom.33">Если что-то сломалось после правок — вкладка 🩺 Диагностика: таблица «симптом → причина → лечение» покрывает типовые поломки.</div>
+</div>
+</section>
+<footer>
+<svg class="f-cloud"><use href="#cloud"></use></svg>
+<p data-i18n="footer.1">🪷 <b>JADE IMMORTAL</b> · пресет и регексы для TavoAI · by <b>@floryhibi</b></p>
+<p class="f-small" data-i18n="footer.2">v4 / v1.1 fix · 83 промпта · 18 текстовых регексов · 13 картиночных · нефрит, тушь и киноварь</p>
+</footer>
+</main>
+<script>
+const A = {};
+function pick(btn, key, val) {
+  A[key] = val;
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const next = btn.parentElement.querySelector('.q-next');
+  if (next) next.disabled = false;
+}
+function step(n) {
+  document.querySelectorAll('.q-step').forEach(s => s.hidden = s.dataset.step != n);
+  const cur = document.querySelector('.q-step[data-step="' + n + '"]');
+  if (cur && A[['','tempo','img','engine','provider','magic'][n]]) cur.querySelector('.q-next').disabled = false;
+}
+function showResult() {
+  document.querySelectorAll('.q-step').forEach(s => s.hidden = true);
+  const r = document.getElementById('quizResult');
+  const T = QT[CUR];
+  let preset = [T.core];
+  let regex = [T.textpack];
+  if (A.tempo === 'slow') preset.push(T.slow);
+  if (A.tempo === 'fast') preset.push(T.fast);
+  if (A.img === 'on') {
+    if (A.engine === 'novel') preset.push(T.novel);
+    else preset.push(T.banana);
+    let prov = {proxy:T.proxy, naistera:T.naistera, link:T.link}[A.provider] || T.oneprov;
+    regex.push(T.imgpack + prov);
+    regex.push(T.cleanup);
+  }
+  if (A.magic === 'light') preset.push(T.magiclight);
+  if (A.magic === 'full') preset.push(T.magicfull);
+  r.innerHTML = T.title
+    + T.enable + '<ul class="dots"><li>' + preset.join('</li><li>') + '</li></ul>'
+    + T.regexes + '<ul class="dots"><li>' + regex.join('</li><li>') + '</li></ul>'
+    + T.warn;
+  r.hidden = false;
+  document.getElementById('quizRestart').hidden = false;
+}
+function restart() {
+  Object.keys(A).forEach(k => delete A[k]);
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('.q-next').forEach(b => b.disabled = true);
+  document.getElementById('quizResult').hidden = true;
+  document.getElementById('quizRestart').hidden = true;
+  step(1);
+}
+
+
+const I18N = {"en": {"meta.1": "🪷 JADE IMMORTAL — interactive guide", "header.1": "<span class=\"lotus\">🪷</span> JADE IMMORTAL", "header.2": "interactive guide to the preset and regexes for TavoAI", "header.3": "碧玉长生 · by @floryhibi", "nav.1": "☯ Overview", "nav.2": "🏯 Core", "nav.3": "🌏 World", "nav.4": "✨ Magic", "nav.5": "💞 Relationships", "nav.6": "🎴 Plaques & Regexes", "nav.7": "🎚 Settings", "nav.8": "🧭 Quiz", "nav.9": "🩺 Diagnostics", "nav.10": "🛠 Customization", "overview.1": "What is Jade Immortal", "overview.2": "A modular preset for roleplay in a xianxia / ancient China setting: cultivation, jade courts, intrigue, and fate.", "overview.3": "☯ Three pillars", "overview.4": "<b>Living world</b> — NPCs with their own psyche, parallel scenes, an unfair world that doesn't bend to the hero", "overview.5": "<b>Living prose</b> — anti-cliché, anti-echo, mandatory thinking block, pacing control", "overview.6": "<b>Living picture</b> — status compass, bond panel, event plaques, and (optionally) illustration generation", "overview.7": "🗂 Five layers of the preset", "overview.8": "Layer", "overview.9": "What's inside", "overview.10": "Default", "overview.11": "🏯 Core", "overview.12": "main, prose, language, rules, NPC, psyche, anti-censor, anti-cliché, anti-echo, parallel scenes, unfair world", "overview.13": "on", "overview.14": "💞 Relationships", "overview.15": "intimacy, pacing, slowburn / fastburn", "overview.16": "intimacy + pacing <b>on</b>, tempos off", "overview.17": "🌏 World", "overview.18": "6 modules: locations, scrolls, letters, dossiers, inventory, time/relationships", "overview.19": "on", "overview.20": "✨ Magic", "overview.21": "21 modules: divination, rituals, talismans, omens, alchemy, and more", "overview.22": "off", "overview.23": "🖼 Pictures", "overview.24": "two engines (novel / banana) × flash, mirror, moment", "overview.25": "off", "overview.26": "The preset is modular: only the core and basic relationships are enabled. Everything else is to taste, like spices. The quiz in the 🧭 tab will help you assemble a configuration for yourself.", "overview.27": "📦 Package contents", "overview.28": "File", "overview.29": "Contents", "overview.30": "<code>(пресет) 🪷 JADE IMMORTAL…json</code>", "overview.31": "83 prompts — the entire logic of the preset", "overview.32": "<code>(регекс) 🪷 JADE IMMORTAL…zip</code>", "overview.33": "18 text regexes: all plaques, thinking block, trace cleanup", "overview.34": "<code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code>", "overview.35": "13 image-generation regexes: 3 providers (PROXY / NAISTERA / LINK)", "overview.36": "🧮 Basic formula", "overview.37": "Base build ≈ <b>11k tokens</b> of context. The heaviest module is 🏯 format (~3k). Magic adds +150–400 tokens per module, pictures +600–900.", "core.1": "Core — always on", "core.2": "These systems are the foundation. Disabling them breaks the preset's design.", "core.3": "🏯 Mandatory systems", "core.4": "Prompt", "core.5": "What it's responsible for", "core.6": "main", "core.7": "Main directive: role, setting, base laws of model behavior", "core.8": "prose", "core.9": "Writing style: literary prose, show-don't-tell", "core.10": "EN / RU", "core.11": "Language block: play in Russian or English; plaque values use the game language", "core.12": "user", "core.13": "Processing the user card and their actions", "core.14": "rules", "core.15": "Laws of the world: including the {{setvar}}/{{getvar}} rule written in plain human language", "core.16": "NPC", "core.17": "Behavior of side characters: their own goals, reactions, memory", "core.18": "unfair world", "core.19": "The world doesn't play along with the hero: consequences, costs, randomness", "core.20": "anti-censor", "core.21": "Bold scenes without cut-offs — but never against the character's nature", "core.22": "anti-cliché", "core.23": "Ban on clichés and \"plastic\" reactions", "core.24": "anti-echo", "core.25": "The model doesn't repeat your phrasing or itself", "core.26": "hidden psyche", "core.27": "The inner world of NPCs: unspoken thoughts, motives, contradictions", "core.28": "parallel scenes", "core.29": "\"Meanwhile\" cutaways to other places in the world — never skipping the main scene forward in time", "core.30": "format / response shape", "core.31": "Response structure: JADE_STATUS header → prose → JADE_BOND → (flash, if enabled)", "core.32": "thinking block", "core.33": "Mandatory character thoughts in every reply", "core.34": "prefill", "core.35": "The start of the model's reply — sets the tone and shape", "core.36": "📜 Key laws (v1.1)", "core.37": "<b>Relevance rule</b> — the model responds to your <i>latest</i> message, not old lines", "core.38": "<b>Time rule</b> — no timeskips of the main scene; time only moves forward and only naturally", "core.39": "<b>Mandatory thinking block</b> — character thoughts in every reply, no skips", "core.40": "<b>Conditional flash</b> — the JADE_FLASH tag is required only when the flash module is enabled; otherwise there is no tag and nothing \"leaks\" into the chat", "core.41": "<b>Character first</b> — even bold scenes never break a character's personality", "core.42": "💌 About separator prompts", "core.43": "In the prompt list you'll find \"dummies\" like <code>💌🪷💌</code> — these are visual separators for easy navigation through the preset. They are <b>always disabled</b> — that's by design, don't enable them.", "footer.1": "🪷 <b>JADE IMMORTAL</b> · preset and regexes for TavoAI · by <b>@floryhibi</b>", "footer.2": "v4 / v1.1 fix · 83 prompts · 18 text regexes · 13 image ones · jade, ink, and cinnabar", "world.1": "World modules", "world.2": "Six modules enabled by default — they fill the game with event plaques.", "world.3": "🌏 Six modules (all enabled)", "world.4": "Module", "world.5": "Tag", "world.6": "What it does", "world.7": "locations", "world.8": "<code>[JADE_LOCATION]</code>", "world.9": "A card for a new place on first visit", "world.10": "scrolls", "world.11": "<code>[JADE_SCROLL]</code>", "world.12": "Official documents: edicts, records, scrolls", "world.13": "letters", "world.14": "<code>[JADE_LETTER]</code>", "world.15": "Personal letters and notes", "world.16": "dossier", "world.17": "<code>[JADE_DOSSIER]</code>", "world.18": "A dossier when meeting a new significant character", "world.19": "inventory", "world.20": "<code>[JADE_INVENTORY]</code>", "world.21": "Gaining, losing, and spending items", "world.22": "time / relationships", "world.23": "<code>[JADE_TIME]</code> / <code>[JADE_RELATION]</code>", "world.24": "Time markers and shifts in NPC relationships", "world.25": "Limit: no more than <b>two</b> event plaques per reply. The model itself picks the most important events of the scene.", "world.26": "👥 NPCs and parallel scenes", "world.27": "NPCs live their own lives: they have goals, rumors, moods — they don't \"wait\" for the hero", "world.28": "<b>Parallel scenes</b> — short meanwhile cut-ins about what's happening elsewhere in the world. Hard rule: a cut-in never moves the main scene forward in time", "world.29": "<b>Unfair world</b> — actions have a cost, plans fall through, luck is not guaranteed", "magic.1": "Magic modules", "magic.2": "21 modules of mysticism and cultivation. All disabled by default — assemble your own set or pick a ready-made mode.", "magic.3": "✨ All magic modules", "magic.4": "Module", "magic.5": "Tag / plaque", "magic.6": "Effect", "magic.7": "divination", "magic.8": "<code>[JADE_DIVINATION]</code>", "magic.9": "Divinations: sticks, hexagrams, signs of fate", "magic.10": "rituals", "magic.11": "<code>[JADE_RITUAL]</code>", "magic.12": "Rituals and ceremonies", "magic.13": "talismans", "magic.14": "<code>[JADE_TALISMAN]</code>", "magic.15": "Creating and finding talismans", "magic.16": "omens", "magic.17": "<code>[JADE_OMEN]</code>", "magic.18": "Omens, heavenly signs", "magic.19": "alchemy", "magic.20": "<code>[JADE_ALCHEMY]</code>", "magic.21": "Pills, elixirs, alchemical experiments", "magic.22": "the other 16 modules", "magic.23": "—", "magic.24": "Cultivation, spiritual roots, arrays, spirits, etc. — see the prompt list in the preset", "magic.25": "Each module adds +150–400 tokens. Enable them selectively: magic that isn't in the plot only distracts the model.", "magic.26": "🧩 Dependencies", "magic.27": "Magic plaques require the corresponding regexes from the text package (they're already included — install the whole package as-is)", "magic.28": "Magic tags follow the shared limit: a maximum of 2 event plaques per reply", "magic.29": "🏮 Four ready-made modes", "magic.30": "Mode", "magic.31": "What to enable", "magic.32": "Mood", "magic.33": "<b>Earthly</b>", "magic.34": "no magic at all", "magic.35": "Historical drama, intrigue, no mysticism", "magic.36": "<b>Light Mysticism</b>", "magic.37": "divination, omens, talismans", "magic.38": "Fatalism, signs of fate, superstitions", "magic.39": "<b>Path of Cultivation</b>", "magic.40": "+ cultivation, alchemy, rituals", "magic.41": "Classic xianxia: power growth, pills, breakthroughs", "magic.42": "<b>Path of the Immortal</b>", "magic.43": "all 21 modules", "magic.44": "The full arsenal: spirits, arrays, heaven and the underworld", "relations.1": "Relationships and pacing", "relations.2": "Intimacy and pacing always work; slow or fast romance — your choice.", "relations.3": "💞 Enabled by default", "relations.4": "Module", "relations.5": "Status", "relations.6": "What it does", "relations.7": "intimacy", "relations.8": "on", "relations.9": "Crafting intimate scenes: emotions, details, consent, character", "relations.10": "pacing", "relations.11": "on", "relations.12": "Natural relationship pacing without sudden jumps", "relations.13": "slowburn", "relations.14": "off", "relations.15": "Slow-burn romance in 15 stages", "relations.16": "fastburn", "relations.17": "off", "relations.18": "Rapid passion", "relations.19": "🌸 Slowburn: 15 stages", "relations.20": "With slowburn enabled, the relationship travels from first glance to full intimacy through 15 stages: first meeting → curiosity → trust → warmth → spark → longing → admitting it to oneself → first touch → growing closer → saying it aloud → and onward to the resolution. The model keeps track of the stage and won't skip steps without a serious plot reason.", "relations.21": "If feelings \"leap\" without cause — most likely fastburn was enabled by accident, or pacing was manually turned off.", "ui.1": "Plaques and regular expressions", "ui.2": "All the beauty of Jade Immortal lives in regexes. The preset makes the model leave text tags — regexes turn them into cards.", "ui.3": "☯ How it works", "ui.4": "That's why <b>a preset without regexes shows raw tags</b>, and regexes without the preset catch nothing. They only work together. If you see raw text like <code>[JADE_FLASH: …]</code> in chat — it means a module is enabled whose paired regex isn't installed (or is disabled).", "ui.5": "📌 Permanent plaques (in every reply)", "ui.6": "Tag", "ui.7": "Regex", "ui.8": "What it shows", "ui.9": "When it appears", "ui.10": "<code>[JADE_STATUS]</code>", "ui.11": "header", "ui.12": "Compass: location, time, weather, date, day, mood, clothing, pose", "ui.13": "<b>Always</b>, at the start of the reply", "ui.14": "<code>[JADE_BOND]</code>", "ui.15": "bond", "ui.16": "Relationships panel: feeling sliders, \"rings\", NPC state of mind", "ui.17": "<b>Always</b>, at the end of the reply", "ui.18": "<code>[JADE_FLASH: …]</code>", "ui.19": "flash*", "ui.20": "Card with a generated image (or a stylish placeholder)", "ui.21": "Only if the flash module is enabled", "ui.22": "* Fixed in v1.1: the preset requires <code>JADE_FLASH</code> only when the flash module is active. Previously the tag was always required — and with images disabled it would \"leak\" into chat as raw text.", "ui.23": "🗂 JADE_STATUS compass fields", "ui.24": "The model fills in 8 fields. Values must be <b>short, in Russian</b> (in EN mode — in English), otherwise the row overflows:", "ui.25": "Field", "ui.26": "Example", "ui.27": "Note", "ui.28": "Location", "ui.29": "mountain monastery", "ui.30": "2–4 words, no sentences", "ui.31": "Time", "ui.32": "dawn", "ui.33": "one word / short phrase", "ui.34": "Weather", "ui.35": "light mist", "ui.36": "short phrase", "ui.37": "Date", "ui.38": "3rd day of the monkey month", "ui.39": "Chinese calendar style", "ui.40": "Story day", "ui.41": "day 12", "ui.42": "counter from the start of the game", "ui.43": "NPC mood", "ui.44": "wary calm", "ui.45": "about the active conversation partner", "ui.46": "Clothing", "ui.47": "grey hanfu, jade belt", "ui.48": "brief", "ui.49": "Pose", "ui.50": "sitting with legs folded", "ui.51": "brief", "ui.52": "💞 JADE_BOND panel", "ui.53": "Closes every reply. The model updates the numbers itself as the scene goes:", "ui.54": "<b>Feeling sliders</b> — trust, affection, attraction, respect, etc. (0–100)", "ui.55": "<b>Rings</b> — circular indicators of key metrics", "ui.56": "<b>State of mind</b> — a short line about \"what's on the mind\" of the active NPC", "ui.57": "If the panel \"jumps\" without reason — see the diagnostics section: usually it's a consequence of an overly aggressive pace or of fastburn being enabled.", "ui.58": "⚡ Event tags (no more than two per reply)", "ui.59": "The model places them only when an event actually happens in the scene. Each tag corresponds to a preset module and a regex:", "ui.60": "Tag", "ui.61": "Module", "ui.62": "What it renders", "ui.63": "<code>[JADE_SCROLL]</code>", "ui.64": "world · scrolls", "ui.65": "A scroll with the text of decrees, notes, records", "ui.66": "<code>[JADE_LETTER]</code>", "ui.67": "world · letters", "ui.68": "A personal letter / note", "ui.69": "<code>[JADE_DOSSIER]</code>", "ui.70": "world · dossier", "ui.71": "Character dossier (on first meeting)", "ui.72": "<code>[JADE_LOCATION]</code>", "ui.73": "world · locations", "ui.74": "A card of the new place", "ui.75": "<code>[JADE_RELATION]</code>", "ui.76": "world · relationships", "ui.77": "A change in NPC attitude", "ui.78": "<code>[JADE_INVENTORY]</code>", "ui.79": "world · inventory", "ui.80": "Gaining/losing an item", "ui.81": "<code>[JADE_TIME]</code>", "ui.82": "world · time", "ui.83": "A time marker (\"three days passed\")", "ui.84": "<code>[JADE_DIVINATION]</code>", "ui.85": "magic · divination", "ui.86": "Divination result", "ui.87": "<code>[JADE_RITUAL]</code>", "ui.88": "magic · rituals", "ui.89": "A ritual card", "ui.90": "<code>[JADE_TALISMAN]</code>", "ui.91": "magic · talismans", "ui.92": "A created/found talisman", "ui.93": "<code>[JADE_OMEN]</code>", "ui.94": "magic · omens", "ui.95": "An omen / portent", "ui.96": "<code>[JADE_ALCHEMY]</code>", "ui.97": "magic · alchemy", "ui.98": "A pill / alchemy result", "ui.99": "<code>[JADE_MOMENT: …]</code>", "ui.100": "images · moment", "ui.101": "An image of the scene's key moment", "ui.102": "<code>[JADE_FLASH: …]</code>", "ui.103": "images · flash", "ui.104": "A \"flash\" image at the end of the reply", "ui.105": "The Mirror (<code>JADE_MIRROR</code>) is a special case: it draws a \"portrait\" of the hero/NPC and is invoked by a separate block of image modules.", "ui.106": "🧵 Pack 1 — text regexes (18 items)", "ui.107": "File <code>(регекс) 🪷 JADE IMMORTAL by @floryhibi.zip</code>. Install <b>the whole pack</b> — they cover all text plaques. Header icons are pulled from a CDN (jsdelivr), extra traffic is minimal.", "ui.108": "Group", "ui.109": "Regexes", "ui.110": "Permanent", "ui.111": "header (JADE_STATUS), bond (JADE_BOND)", "ui.112": "Thinking block", "ui.113": "2 regexes: character thought formatting", "ui.114": "Event", "ui.115": "scroll, letter, dossier, location, relation, inventory, time", "ui.116": "Magic", "ui.117": "divination, ritual, talisman, omen, alchemy", "ui.118": "Utility", "ui.119": "🧹 trace cleanup — removes \"orphaned\" image tags (placed last, runs AFTER the image regexes)", "ui.120": "🖼 Pack 2 — image regexes (13 items)", "ui.121": "File <code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code>. Inside — <b>three provider groups</b>, with <b>only one</b> set enabled from each group:", "ui.122": "Group", "ui.123": "Who it's for", "ui.124": "What to insert", "ui.125": "<b>PROXY</b>", "ui.126": "You have your own generation proxy", "ui.127": "Proxy URL + token + style (in the regex fields, marked ⬇️вставить⬇️)", "ui.128": "<b>NAISTERA</b>", "ui.129": "Generation via the @naistera_blocks_bot bot", "ui.130": "Bot token + style", "ui.131": "<b>LINK</b>", "ui.132": "Generation via LinkAPI", "ui.133": "LinkAPI token (the endpoint <code>https://api.linkapi.ai/v1beta</code> and model <code>gemini-3.1-flash-image-c</code> are already filled in)", "ui.134": "Each group has three regexes: <b>FLASH</b>, <b>MIRROR</b>, <b>MOMENT</b> + an explanation file and \"⬇️вставить⬇️\" notes with exact spots for tokens.", "ui.135": "Enable exactly <b>one</b> provider group. Two groups at once = duplicate requests and broken markup.", "ui.136": "Never publish or forward regexes with a token already filled in. The token stays only on your device.", "ui.137": "The image engine is selected in the preset: <b>⬇️novel⬇️</b> (tag-based, NovelAI style) or <b>⬇️banana⬇️</b> (natural-language descriptions). Details — in the \"Settings\" tab.", "setup.1": "Installation and setup", "setup.2": "From downloaded files to the first reply — three steps.", "setup.3": "<span class=\"step-n\">一</span>\n<h4>Import the preset</h4>\n<p>TavoAI → Presets → import JSON <code>(пресет) 🪷 JADE IMMORTAL…</code>. Everything is already in place: the core is enabled, modules are disabled.</p>", "setup.4": "<span class=\"step-n\">二</span>\n<h4>Import the regexes</h4>\n<p>Regex → import all 18 files of the text pack. If you want images — add the 13 files of the image pack and enable <b>one</b> provider group, pasting your token into the ⬇️вставить⬇️ spots.</p>", "setup.5": "<span class=\"step-n\">三</span>\n<h4>Check the order</h4>\n<p>The regex <code>🧹 чистка следов</code> must be <b>last</b> in the list — after all image regexes. It sweeps up tags that no other regex caught.</p>", "setup.6": "🏯 Default configuration (v4)", "setup.7": "Layer", "setup.8": "State", "setup.9": "What's included", "setup.10": "Core", "setup.11": "enabled", "setup.12": "main, prose, RU/EN, user, rules, NPC, unfair world, anti-censor, anti-cliché, anti-echo, hidden psyche, parallel scenes", "setup.13": "Relationships", "setup.14": "enabled", "setup.15": "intimacy, pacing", "setup.16": "World", "setup.17": "enabled", "setup.18": "all 6 world modules", "setup.19": "Form", "setup.20": "enabled", "setup.21": "format, reply form, thinking block, prefill", "setup.22": "Magic", "setup.23": "disabled", "setup.24": "all 21 modules — enable to taste", "setup.25": "Pace", "setup.26": "disabled", "setup.27": "slowburn / fastburn — neutral pacing by default", "setup.28": "Dialogue", "setup.29": "disabled", "setup.30": "both dialogue modules", "setup.31": "Length", "setup.32": "disabled", "setup.33": "all length modules", "setup.34": "Images", "setup.35": "disabled", "setup.36": "both novel and banana groups", "setup.37": "Base build ≈ <b>11k tokens</b> (the heaviest is the 🏯 format module, ~3k). Magic adds +150–400 per module, images +600–900.", "setup.38": "🎚 Safe toggles", "setup.39": "<b>I want images:</b> pick an engine — enable the ⬇️novel⬇️ group (tags) OR ⬇️banana⬇️ (natural language), and inside it — flash/mirror/moment to taste. Plus the matching regex group.", "setup.40": "<b>I want a slow romance:</b> enable slowburn (15 stages). Keep fastburn disabled in that case.", "setup.41": "<b>I want magic:</b> start with a ready-made mode from the \"Magic\" tab — compatible sets are already assembled there.", "setup.42": "<b>Low on tokens:</b> first disable \"unfair world\" and \"parallel scenes\", then some world modules.", "setup.43": "⛔ Conflicts — what must not be enabled together", "setup.44": "Pair", "setup.45": "Why", "setup.46": "slowburn + fastburn", "setup.47": "Opposite relationship paces — the model will start flip-flopping", "setup.48": "⬇️novel⬇️ + ⬇️banana⬇️", "setup.49": "Two different image prompt syntaxes — format conflict", "setup.50": "Two image regex groups (PROXY/NAISTERA/LINK)", "setup.51": "Double generation and broken markup", "setup.52": "Multiple length modules", "setup.53": "Mutually exclusive reply-length requirements", "quiz.1": "Quiz: build your configuration", "quiz.2": "Five questions — and a ready-made list of toggles for your play style.", "quiz.3": "1/5 · What story pace suits you best?", "quiz.4": "Slow smolder — glances, hints, a long road", "quiz.5": "Neutral — whatever happens", "quiz.6": "Fast and hot — passion from the first scenes", "quiz.7": "next →", "quiz.8": "2/5 · Do you want images in replies?", "quiz.9": "No, text only", "quiz.10": "Yes, I want illustrations", "quiz.11": "next →", "quiz.12": "3/5 · If images — which prompt engine?", "quiz.13": "NovelAI style: comma-separated tags", "quiz.14": "Natural language (banana)", "quiz.15": "Skip — no images needed", "quiz.16": "next →", "quiz.17": "4/5 · What will you generate with? (provider)", "quiz.18": "My own proxy", "quiz.19": "Bot @naistera_blocks_bot", "quiz.20": "LinkAPI", "quiz.21": "Skip", "quiz.22": "next →", "quiz.23": "5/5 · Magic and mysticism?", "quiz.24": "A grounded story, no magic", "quiz.25": "Light mysticism — divination, omens", "quiz.26": "The full cultivator arsenal", "quiz.27": "result ✦", "quiz.28": "↺ start over", "tests.1": "Mini-tests and diagnostics", "tests.2": "Post-install checks and a \"symptom → fix\" table.", "tests.3": "🧪 Three mini-tests after installation", "tests.4": "<b>Compass.</b> Send any message. The reply should start with a JADE_STATUS header (not raw text!) and end with a JADE_BOND panel. If you see <code>[JADE_STATUS]</code> as plain text — the text regexes are not imported or are disabled.", "tests.5": "<b>Event.</b> Write: \"I'm handed a letter from my mentor\". A letter card should appear. No more than two event plaques per reply — that's normal.", "tests.6": "<b>Image</b> (if enabled): ask \"show me what the heroine looks like\". A flash/mirror should trigger with an image or a neat placeholder — but not a raw <code>[JADE_FLASH: …]</code>.", "tests.7": "🩺 Diagnostics: symptom → cause → fix", "tests.8": "Symptom", "tests.9": "Cause", "tests.10": "Fix", "tests.11": "Raw <code>[JADE_*]</code> text in chat", "tests.12": "The module is enabled, but its paired regex is not (or is disabled)", "tests.13": "Import/enable the regex; make sure 🧹 чистка следов is active and last in the list", "tests.14": "<code>[JADE_FLASH]</code> visible after regenerating the reply", "tests.15": "The old preset version always required FLASH", "tests.16": "Update to v1.1 — FLASH is now required only when flash is active", "tests.17": "Header text is cut off/overlapping", "tests.18": "The model writes long field values", "tests.19": "In v1.1 the header regex limits height; the \"short values\" rule is also written into the preset — regenerate the reply", "tests.20": "Header in English during a Russian game", "tests.21": "The old version didn't lock the value language", "tests.22": "v1.1: values follow the game language. Update the preset", "tests.23": "The model replies to an old message instead of the latest one", "tests.24": "Long context breaks focus", "tests.25": "v1.1 adds a relevance rule; if it recurs — delete part of the old conversation", "tests.26": "The model makes time jumps", "tests.27": "—", "tests.28": "Forbidden in v1.1 (time rule + parallel scenes without timeskips in the main line). Update the preset", "tests.29": "The thinking block disappears", "tests.30": "The old wording was \"soft\"", "tests.31": "v1.1: the thinking block is mandatory (MANDATORY). Update the preset", "tests.32": "Images don't generate, but the placeholder plaque appears", "tests.33": "Token not pasted / wrong provider URL", "tests.34": "Check the ⬇️вставить⬇️ spots in the image regexes of your chosen group", "tests.35": "Double images / broken markup", "tests.36": "Two provider groups are enabled", "tests.37": "Keep one: PROXY, NAISTERA or LINK", "tests.38": "Replies \"drifted\", strange behavior", "tests.39": "Module conflict (slowburn+fastburn, two length modules)", "tests.40": "Check the conflict table in the \"Setup\" tab", "tests.41": "Replies get cut off", "tests.42": "Not enough max tokens in the API settings", "tests.43": "Raise the reply token limit; the base build wants ~2k per reply", "tests.44": "📜 What changed in v1.1", "tests.45": "JADE_FLASH is required only when flash is enabled — raw tags with images off are gone", "tests.46": "New regex 🧹 чистка следов — sweeps up orphaned image tags", "tests.47": "Header: short values in the game language + overflow protection in the regex", "tests.48": "The thinking block became mandatory; added a relevance rule (reply to the latest message) and a timeskip ban", "tests.49": "Softened the anti-censor and prefill wording (\"never break character's personality\")", "tests.50": "The {{setvar}}/{{getvar}} rule rewritten in plain human language", "custom.1": "Customization: remove the excess and remake it for yourself", "custom.2": "The preset is modular: almost everything can be disabled, removed, or rewritten. Here are three levels of intervention — and the boundaries you shouldn't cross.", "custom.3": "🎚 Level 1 — toggles (safe)", "custom.4": "The simplest way to \"remove what you don't use\" is to disable the module right in the preset's prompt list. Nothing is deleted or broken: a disabled toggle simply doesn't enter the context.", "custom.5": "Don't need a specific magic module (divination, alchemy, rituals, talismans) — disable its toggle. You can also disable its paired plaque (see level 2).", "custom.6": "Don't need world modules (NPC, parallel scenes) — disable them; the core keeps working.", "custom.7": "Don't like the event tag — disable its prompt requirement and its regex.", "custom.8": "Before major edits, make a copy of the preset under a different name — rollback takes seconds.", "custom.9": "🎴 Level 2 — remove a plaque entirely", "custom.10": "A plaque lives in three places, and it must be removed consistently, otherwise the model will output a tag that nothing renders (or vice versa):", "custom.11": "<b>1. Regex.</b> Disable (or delete) the plaque's regex in the text pack. If it has an image counterpart (mirror / moment / flash) — disable that too in the second pack.", "custom.12": "<b>2. Tag requirement.</b> In the output-format prompt, remove the line that requires this tag (e.g., a mention of <code>[JADE_FLASH]</code> or <code>[JADE_MIRROR]</code>).", "custom.13": "<b>3. Descriptions.</b> If the tag is described in reference prompts (tag list, the \"no more than two per reply\" rules) — remove it there too, so the model never remembers it.", "custom.14": "The core's permanent plaques (<code>[JADE_STATUS]</code>, <code>[JADE_BOND]</code>, time) are best left alone — state logic depends on them. But if you really want to, they are removed via the same three-step scheme.", "custom.15": "✏️ Level 3 — change the content", "custom.16": "<b>Relationship stages.</b> The bond ladder (Strangers → … → Bound / 陌路 → … → 同心) is described in the bond prompt and duplicated in the panel regex. You must change it in <b>both</b> places: the words in the prompt are what the model writes, the words in the regex are what shows on the scale.", "custom.17": "<b>Plaque colors and fonts.</b> At the start of each regex's <code>replaceString</code> there's a block of CSS variables and <code>font-family</code>. Change values there; don't touch the HTML structure unless you're sure.", "custom.18": "<b>Pace and length.</b> Reply-length, pacing, and slowburn-stage requirements are plain text rules in their own prompts; rewrite the wording however you like.", "custom.19": "<b>Texts and examples.</b> Any descriptions, thought examples, law wordings — freely editable; it's ordinary prompt text.", "custom.20": "⛔ What you must NOT do", "custom.21": "<b>Don't rename marker keys</b> (<code>uroven</code>, <code>procent</code>, <code>nezhnost</code>, etc.). They are hardcoded in the regexes — rename them in the prompt and the panel stops filling. Keys always stay in Latin script.", "custom.22": "<b>Don't rename the tags themselves</b> (<code>[JADE_STATUS]</code>, <code>[JADE_BOND]</code>…) — the regexes look for exactly these strings.", "custom.23": "<b>Don't change the regex order inside a pack</b> — they run in sequence, and order matters (e.g., 🧹 чистка следов goes last).", "custom.24": "<b>Don't delete the 🧹 чистка следов regex</b> — it sweeps up orphaned image tags; without it, trash stays in the chat.", "custom.25": "<b>Don't touch <code>findRegex</code> unless you're confident in the syntax</b> — one extra bracket and the plaque stops appearing. Copy first, edit second.", "custom.26": "🧭 \"I want…\" → \"what to do\"", "custom.27": "\"I don't need alchemy\" → disable the alchemy toggle + the ⚗️ алхимия regex + the tag line in the format.", "custom.28": "\"I want different relationship stage names\" → edit the list in the bond prompt and the ladder in the 🪷 связь regex (both places!).", "custom.29": "\"The plaque is too bright / wrong color\" → CSS variables at the start of its regex's <code>replaceString</code>.", "custom.30": "\"Replies are too long\" → edit the length rules in the prose/format prompts.", "custom.31": "\"No images at all\" → disable the entire second regex pack and the mirror/moment/flash prompts.", "custom.32": "\"I want my own plaque\" → copy an existing regex as a template, invent a new tag <code>[JADE_...]</code>, add the tag requirement to the format, and place the regex before 🧹 чистка следов.", "custom.33": "If something broke after edits — the 🩺 Diagnostics tab: the \"symptom → cause → fix\" table covers typical breakages."}, "zh": {"meta.1": "🪷 JADE IMMORTAL — 互动指南", "header.1": "<span class=\"lotus\">🪷</span> JADE IMMORTAL", "header.2": "TavoAI 预设与正则互动指南", "header.3": "碧玉长生 · by @floryhibi", "nav.1": "☯ 概览", "nav.2": "🏯 核心", "nav.3": "🌏 世界", "nav.4": "✨ 法术", "nav.5": "💞 关系", "nav.6": "🎴 界面卡片与正则", "nav.7": "🎚 设置", "nav.8": "🧭 测验", "nav.9": "🩺 诊断", "nav.10": "🛠 自定义", "overview.1": "什么是 Jade Immortal", "overview.2": "面向仙侠／古代中国背景角色扮演的模块化预设：修炼、玉阙仙庭、阴谋与命运。", "overview.3": "☯ 三大支柱", "overview.4": "<b>鲜活的世界</b>——拥有独立心性的 NPC、平行场景、不迁就主角的不公世界", "overview.5": "<b>鲜活的文字</b>——反套路、反回声、强制思绪、节奏控制", "overview.6": "<b>鲜活的画面</b>——状态罗盘、羁绊面板、事件界面卡片，以及（可选的）插图生成", "overview.7": "🗂 预设的五层结构", "overview.8": "层级", "overview.9": "内含内容", "overview.10": "默认状态", "overview.11": "🏯 核心", "overview.12": "main、文风、语言、规则、NPC、心性、反审查、反套路、反回声、平行场景、不公世界", "overview.13": "开启", "overview.14": "💞 关系", "overview.15": "亲密度、节奏、慢热／快热", "overview.16": "亲密度＋节奏<b>开启</b>，速率关闭", "overview.17": "🌏 世界", "overview.18": "6 个模块：地点、卷轴、书信、档案、物品栏、时间／关系", "overview.19": "开启", "overview.20": "✨ 法术", "overview.21": "21 个模块：占卜、仪式、符箓、征兆、炼丹等", "overview.22": "关闭", "overview.23": "🖼 图片", "overview.24": "两种引擎（novel／banana）× 闪光、明镜、瞬间", "overview.25": "关闭", "overview.26": "预设为模块化：默认仅开启核心与基础关系。其余皆如香料，随心取用。🧭 标签页中的测验可帮你搭配出适合自己的配置。", "overview.27": "📦 交付清单", "overview.28": "文件", "overview.29": "内容", "overview.30": "<code>(пресет) 🪷 JADE IMMORTAL…json</code>", "overview.31": "83 条提示词——预设的全部逻辑", "overview.32": "<code>(регекс) 🪷 JADE IMMORTAL…zip</code>", "overview.33": "18 个文本正则：全部界面卡片、思绪、痕迹清理", "overview.34": "<code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code>", "overview.35": "13 个图片生成正则：3 个提供商（PROXY／NAISTERA／LINK）", "overview.36": "🧮 基础公式", "overview.37": "基础配置约 <b>11k tokens</b> 上下文。最重的模块是 🏯 格式（约 3k）。法术每个模块增加 150–400 tokens，图片增加 600–900。", "core.1": "核心——始终开启", "core.2": "这些系统是根基。关闭它们会破坏预设的设计意图。", "core.3": "🏯 必备系统", "core.4": "提示词", "core.5": "职责", "core.6": "main", "core.7": "核心指令：角色、背景、模型行为的基本法则", "core.8": "文风", "core.9": "写作风格：文学性散文，以展示代替叙述", "core.10": "EN / RU", "core.11": "语言模块：以俄语或英语游玩，界面卡片的取值使用游戏语言", "core.12": "user", "core.13": "处理用户角色卡及其行动", "core.14": "规则", "core.15": "世界法则：包括以平实语言写成的 {{setvar}}/{{getvar}} 规则", "core.16": "NPC", "core.17": "次要角色的行为：自己的目标、反应与记忆", "core.18": "不公世界", "core.19": "世界不会配合主角：后果、代价与偶然", "core.20": "反审查", "core.21": "大胆场景不被中断——但绝不违背角色性格", "core.22": "反套路", "core.23": "禁止陈词滥调与「塑料感」反应", "core.24": "反回声", "core.25": "模型不重复你的措辞，也不重复自己", "core.26": "隐密心性", "core.27": "NPC 的内心世界：未言明的思绪、动机与矛盾", "core.28": "平行场景", "core.29": "「与此同时」式切入世界他处的场景——绝不让主场景的时间跳跃", "core.30": "格式／回复结构", "core.31": "回复结构：JADE_STATUS 头部 → 正文 → JADE_BOND →（若开启则加闪光）", "core.32": "思绪", "core.33": "每次回复中必须包含角色思绪", "core.34": "预填充", "core.35": "模型回复的开头——奠定基调与形态", "core.36": "📜 核心法则（v1.1）", "core.37": "<b>相关性规则</b>——模型只回应你<i>最新</i>的一条消息，而非旧台词", "core.38": "<b>时间规则</b>——主场景不得跳过时间；时间只能向前、且只能自然地流动", "core.39": "<b>强制思绪</b>——每次回复都须有角色思绪，不得遗漏", "core.40": "<b>条件闪光</b>——仅当闪光模块开启时才需要 JADE_FLASH 标签；否则没有该标签，也不会有任何内容「泄漏」到聊天中", "core.41": "<b>性格至上</b>——即使是大胆场景，也不得破坏角色的人格", "core.42": "💌 关于分隔提示词", "core.43": "提示词列表中会出现 <code>💌🪷💌</code> 之类的「空壳」——它们是便于浏览预设的视觉分隔符。它们<b>始终处于关闭状态</b>——本就是如此设计，请勿开启。", "footer.1": "🪷 <b>JADE IMMORTAL</b> · TavoAI 预设与正则 · by <b>@floryhibi</b>", "footer.2": "v4 / v1.1 fix · 83 条提示词 · 18 个文本正则 · 13 个图片正则 · 玉、墨与朱砂", "world.1": "世界模块", "world.2": "默认启用的六个模块——它们用事件界面卡片充实游戏内容。", "world.3": "🌏 六个模块（全部启用）", "world.4": "模块", "world.5": "标签", "world.6": "功能说明", "world.7": "地点", "world.8": "<code>[JADE_LOCATION]</code>", "world.9": "首次到访新地点时生成地点卡片", "world.10": "卷轴", "world.11": "<code>[JADE_SCROLL]</code>", "world.12": "官方文书：诏令、记录、卷轴", "world.13": "书信", "world.14": "<code>[JADE_LETTER]</code>", "world.15": "私人书信与便条", "world.16": "档案", "world.17": "<code>[JADE_DOSSIER]</code>", "world.18": "结识新的重要角色时生成档案", "world.19": "物品栏", "world.20": "<code>[JADE_INVENTORY]</code>", "world.21": "物品的获得、丢失与消耗", "world.22": "时间 / 关系", "world.23": "<code>[JADE_TIME]</code> / <code>[JADE_RELATION]</code>", "world.24": "时间节点与 NPC 关系的变化", "world.25": "限制：每次回复最多<b>两张</b>事件界面卡片。模型会自行挑选场景中最重要的两个事件。", "world.26": "👥 NPC 与平行场景", "world.27": "NPC 有各自的生活：他们有目标、传闻和心情——他们不会「等待」主角", "world.28": "<b>平行场景</b>——关于世界别处正在发生之事的简短 meanwhile 插叙。硬性规则：插叙绝不会推动主场景的时间线", "world.29": "<b>不公的世界</b>——行动皆有代价，计划会落空，运气并非必然", "magic.1": "法术模块", "magic.2": "21 个玄学与修炼模块，默认全部关闭——自行组合套装，或直接选用现成模式。", "magic.3": "✨ 全部法术模块", "magic.4": "模块", "magic.5": "标签 / 界面卡片", "magic.6": "效果", "magic.7": "占卜", "magic.8": "<code>[JADE_DIVINATION]</code>", "magic.9": "占卜：签筒、卦象、命运之兆", "magic.10": "祭祀", "magic.11": "<code>[JADE_RITUAL]</code>", "magic.12": "祭祀与典礼仪式", "magic.13": "符箓", "magic.14": "<code>[JADE_TALISMAN]</code>", "magic.15": "制作与获得符箓", "magic.16": "兆眼", "magic.17": "<code>[JADE_OMEN]</code>", "magic.18": "预兆、天象异象", "magic.19": "炼丹", "magic.20": "<code>[JADE_ALCHEMY]</code>", "magic.21": "丹药、灵液、炼丹试验", "magic.22": "其余 16 个模块", "magic.23": "—", "magic.24": "修炼、灵根、阵法、精怪等等——详见预设中的提示词列表", "magic.25": "每个模块会额外增加 +150–400 tokens。请按需精确开启：剧情中没有的法术只会分散模型的注意力。", "magic.26": "🧩 依赖关系", "magic.27": "法术界面卡片需要文本包中对应的正则（包内已包含——请整包安装）", "magic.28": "法术标签遵循统一限制：每次回复最多 2 张事件界面卡片", "magic.29": "🏮 四种现成模式", "magic.30": "模式", "magic.31": "需要开启的内容", "magic.32": "氛围", "magic.33": "<b>凡尘</b>", "magic.34": "不开启任何法术", "magic.35": "历史正剧、权谋纷争，毫无玄学色彩", "magic.36": "<b>轻度玄学</b>", "magic.37": "占卜、兆眼、符箓", "magic.38": "宿命论、命运征兆、民间忌讳", "magic.39": "<b>修仙之路</b>", "magic.40": "+ 修炼、炼丹、祭祀", "magic.41": "经典仙侠：实力成长、丹药、境界突破", "magic.42": "<b>仙人之路</b>", "magic.43": "全部 21 个模块", "magic.44": "完整阵容：精怪、阵法、天庭与幽冥", "relations.1": "关系与节奏", "relations.2": "亲密与节奏始终生效；慢热或快热恋情——随你选择。", "relations.3": "💞 默认开启", "relations.4": "模块", "relations.5": "状态", "relations.6": "功能说明", "relations.7": "亲密度", "relations.8": "开", "relations.9": "精细描写亲密场景：情感、细节、同意、性格", "relations.10": "节奏", "relations.11": "开", "relations.12": "让关系发展节奏自然，不突兀跳跃", "relations.13": "slowburn", "relations.14": "关", "relations.15": "15个阶段的慢热恋情", "relations.16": "fastburn", "relations.17": "关", "relations.18": "迅疾的激情", "relations.19": "🌸 Slowburn：15个阶段", "relations.20": "开启 slowburn 后，感情将历经15个阶段，从初见到全心亲密：初识 → 好奇 → 信任 → 暖意 → 心动 → 情思缱绻 → 暗自承认 → 初次触碰 → 日渐亲近 → 亲口表白 → 直至结局。模型会记录当前阶段，没有充分的剧情理由不会跳段。", "relations.21": "如果感情无缘无故「跳变」——多半是误开了 fastburn，或节奏被手动关闭了。", "ui.1": "界面卡片与正则表达式", "ui.2": "Jade Immortal 的全部美感都藏在正则里。预设让模型留下文本标签——正则把它们变成卡片。", "ui.3": "☯ 工作原理", "ui.4": "所以<b>没有正则的预设只会显示原始标签</b>，而没有预设的正则什么也抓不到。二者必须配合使用。如果在聊天中看到 <code>[JADE_FLASH: …]</code> 这样的原始文本——说明某个模块已开启，但对应的正则未安装（或被关闭）。", "ui.5": "📌 常驻界面卡片（每次回复都出现）", "ui.6": "标签", "ui.7": "正则", "ui.8": "显示内容", "ui.9": "出现时机", "ui.10": "<code>[JADE_STATUS]</code>", "ui.11": "顶栏", "ui.12": "罗盘：地点、时间、天气、日期、天数、心情、衣着、姿势", "ui.13": "<b>始终</b>出现在回复开头", "ui.14": "<code>[JADE_BOND]</code>", "ui.15": "羁绊", "ui.16": "关系面板：情感滑条、「圆环」、NPC的心境状态", "ui.17": "<b>始终</b>出现在回复末尾", "ui.18": "<code>[JADE_FLASH: …]</code>", "ui.19": "画面*", "ui.20": "带生成图片的卡片（或精美的占位图）", "ui.21": "仅当画面模块开启时", "ui.22": "* v1.1 已修复：预设仅在画面模块开启时才要求 <code>JADE_FLASH</code>。此前该标签始终被要求——图片关闭时会以原始文本「泄漏」到聊天中。", "ui.23": "🗂 JADE_STATUS 罗盘字段", "ui.24": "模型需要填写8个字段。取值必须<b>简短、使用俄语</b>（EN模式则用英语），否则整行会溢出：", "ui.25": "字段", "ui.26": "示例", "ui.27": "备注", "ui.28": "地点", "ui.29": "山间寺院", "ui.30": "2–4个词，不要句子", "ui.31": "时间", "ui.32": "黎明", "ui.33": "一个词 / 简短短语", "ui.34": "天气", "ui.35": "薄雾", "ui.36": "简短短语", "ui.37": "日期", "ui.38": "猴月初三", "ui.39": "中式历法风格", "ui.40": "剧情天数", "ui.41": "第12天", "ui.42": "从开局起累计的计数器", "ui.43": "NPC心情", "ui.44": "警觉的平静", "ui.45": "指当前对话的NPC", "ui.46": "衣着", "ui.47": "灰色汉服，玉腰带", "ui.48": "简短", "ui.49": "姿势", "ui.50": "盘腿而坐", "ui.51": "简短", "ui.52": "💞 JADE_BOND 面板", "ui.53": "收尾每次回复。模型会随剧情自行更新数字：", "ui.54": "<b>情感滑条</b>——信任、好感、心动、敬意等（0–100）", "ui.55": "<b>圆环</b>——关键数值的环形指示器", "ui.56": "<b>心境</b>——一行短句，写当前NPC「此刻心中所想」", "ui.57": "如果面板无缘无故「跳变」——请看诊断章节：通常是因为节奏过于激进，或开启了 fastburn。", "ui.58": "⚡ 事件标签（每次回复最多两个）", "ui.59": "只有当场景中真正发生事件时，模型才会放置它们。每个标签都对应一个预设模块和一个正则：", "ui.60": "标签", "ui.61": "模块", "ui.62": "绘制内容", "ui.63": "<code>[JADE_SCROLL]</code>", "ui.64": "世界 · 卷轴", "ui.65": "写有诏令、字条、记录的卷轴", "ui.66": "<code>[JADE_LETTER]</code>", "ui.67": "世界 · 书信", "ui.68": "私人信件 / 字条", "ui.69": "<code>[JADE_DOSSIER]</code>", "ui.70": "世界 · 档案", "ui.71": "角色档案（初识时）", "ui.72": "<code>[JADE_LOCATION]</code>", "ui.73": "世界 · 地点", "ui.74": "新地点的卡片", "ui.75": "<code>[JADE_RELATION]</code>", "ui.76": "世界 · 关系", "ui.77": "NPC态度的变化", "ui.78": "<code>[JADE_INVENTORY]</code>", "ui.79": "世界 · 行囊", "ui.80": "获得/失去物品", "ui.81": "<code>[JADE_TIME]</code>", "ui.82": "世界 · 时间", "ui.83": "时间刻度（「三日已逝」）", "ui.84": "<code>[JADE_DIVINATION]</code>", "ui.85": "术法 · 占卜", "ui.86": "占卜结果", "ui.87": "<code>[JADE_RITUAL]</code>", "ui.88": "术法 · 仪式", "ui.89": "仪式卡片", "ui.90": "<code>[JADE_TALISMAN]</code>", "ui.91": "术法 · 符箓", "ui.92": "制成/寻得的符箓", "ui.93": "<code>[JADE_OMEN]</code>", "ui.94": "术法 · 征兆", "ui.95": "预兆 / 天象示警", "ui.96": "<code>[JADE_ALCHEMY]</code>", "ui.97": "术法 · 炼丹", "ui.98": "丹药 / 炼丹结果", "ui.99": "<code>[JADE_MOMENT: …]</code>", "ui.100": "图片 · 手账", "ui.101": "场景关键时刻的图片", "ui.102": "<code>[JADE_FLASH: …]</code>", "ui.103": "图片 · 画面", "ui.104": "回复末尾的「画面」图片", "ui.105": "明镜（<code>JADE_MIRROR</code>）是个特例：绘制主角/NPC的「画像」，由图片模块的独立区块调用。", "ui.106": "🧵 包1——文本正则（共18条）", "ui.107": "文件 <code>(регекс) 🪷 JADE IMMORTAL by @floryhibi.zip</code>。请安装<b>整个包</b>——它们覆盖所有文本卡片。顶栏图标从 CDN（jsdelivr）拉取，额外流量极少。", "ui.108": "分组", "ui.109": "正则", "ui.110": "常驻", "ui.111": "顶栏（JADE_STATUS）、羁绊（JADE_BOND）", "ui.112": "思绪", "ui.113": "2条正则：角色内心想法的排版", "ui.114": "事件", "ui.115": "卷轴、书信、档案、地点、关系、行囊、时间", "ui.116": "术法", "ui.117": "占卜、仪式、符箓、征兆、炼丹", "ui.118": "辅助", "ui.119": "🧹 痕迹清理——清除「无主」的图片标签（排在最后，在图片正则之后运行）", "ui.120": "🖼 包2——图片正则（共13条）", "ui.121": "文件 <code>(регекс) 🪷JADE_IMMORTAL ; картинки.zip</code>。内含<b>三个服务商分组</b>，每个分组<b>只启用一套</b>：", "ui.122": "分组", "ui.123": "适用人群", "ui.124": "需要填写的内容", "ui.125": "<b>PROXY</b>", "ui.126": "你有自己的生成代理", "ui.127": "代理 URL + 令牌 + 风格（填在正则字段中，标有 ⬇️вставить⬇️ 的位置）", "ui.128": "<b>NAISTERA</b>", "ui.129": "通过 @naistera_blocks_bot 机器人生成", "ui.130": "机器人令牌 + 风格", "ui.131": "<b>LINK</b>", "ui.132": "通过 LinkAPI 生成", "ui.133": "LinkAPI 令牌（端点 <code>https://api.linkapi.ai/v1beta</code> 和模型 <code>gemini-3.1-flash-image-c</code> 已预先填好）", "ui.134": "每组各有三条正则：<b>画面</b>、<b>明镜</b>、<b>手账</b> + 说明文件和标注「⬇️вставить⬇️」的令牌填写位置提示。", "ui.135": "只启用<b>一个</b>服务商分组。同时启用两组 = 请求重复且排版错乱。", "ui.136": "切勿发布或转发已填入令牌的正则。令牌只能保存在你自己的设备上。", "ui.137": "图片引擎在预设中选择：<b>⬇️novel⬇️</b>（标签式，NovelAI 风格）或 <b>⬇️banana⬇️</b>（自然语言描述）。详见「设置」标签页。", "setup.1": "安装与设置", "setup.2": "从下载文件到收到第一条回复——只需三步。", "setup.3": "<span class=\"step-n\">一</span>\n<h4>导入预设</h4>\n<p>TavoAI → 预设 → 导入 JSON <code>(пресет) 🪷 JADE IMMORTAL…</code>。一切已就绪：核心已启用，模块已关闭。</p>", "setup.4": "<span class=\"step-n\">二</span>\n<h4>导入正则</h4>\n<p>Regex → 导入文本包的全部 18 个文件。如需图片——再添加图片包的 13 个文件，并启用<b>一个</b>提供商标组，把令牌填入 ⬇️вставить⬇️ 的位置。</p>", "setup.5": "<span class=\"step-n\">三</span>\n<h4>检查顺序</h4>\n<p>正则 <code>🧹 чистка следов</code> 必须排在列表<b>最后</b>——在所有图片正则之后。它负责清扫其他正则都未捕获的标签。</p>", "setup.6": "🏯 默认配置（v4）", "setup.7": "层级", "setup.8": "状态", "setup.9": "包含内容", "setup.10": "核心", "setup.11": "已启用", "setup.12": "main、散文、RU/EN、user、规则、NPC、不公世界、反审查、反套路、反回声、隐藏心理、平行场景", "setup.13": "关系", "setup.14": "已启用", "setup.15": "亲密度、节奏", "setup.16": "世界", "setup.17": "已启用", "setup.18": "全部 6 个世界模块", "setup.19": "形式", "setup.20": "已启用", "setup.21": "格式、回复形式、思绪、预填充", "setup.22": "法术", "setup.23": "已关闭", "setup.24": "全部 21 个模块——按喜好启用", "setup.25": "节奏", "setup.26": "已关闭", "setup.27": "slowburn / fastburn——默认为中性节奏", "setup.28": "对话", "setup.29": "已关闭", "setup.30": "两个对话模块", "setup.31": "长度", "setup.32": "已关闭", "setup.33": "所有长度模块", "setup.34": "图片", "setup.35": "已关闭", "setup.36": "novel 与 banana 两个组", "setup.37": "基础配置 ≈ <b>11k 令牌</b>（最重的是 🏯 格式模块，约 3k）。法术每个模块增加 +150–400，图片 +600–900。", "setup.38": "🎚 安全开关", "setup.39": "<b>想要图片：</b>选择引擎——启用 ⬇️novel⬇️ 组（标签式）或 ⬇️banana⬇️（自然语言），组内按喜好选择画面/明镜/手账。另需配对的正则组。", "setup.40": "<b>想要慢热恋爱：</b>启用 slowburn（15 个阶段）。此时请保持 fastburn 关闭。", "setup.41": "<b>想要法术：</b>从「法术」标签页的现成模式开始——那里已组装好兼容的组合。", "setup.42": "<b>令牌不足：</b>首先关闭「不公世界」和「平行场景」，然后关闭部分世界模块。", "setup.43": "⛔ 冲突——不可同时启用的组合", "setup.44": "组合", "setup.45": "原因", "setup.46": "slowburn + fastburn", "setup.47": "关系节奏截然相反——模型会开始摇摆不定", "setup.48": "⬇️novel⬇️ + ⬇️banana⬇️", "setup.49": "两种不同的图片提示词语法——格式冲突", "setup.50": "两个图片正则组（PROXY/NAISTERA/LINK）", "setup.51": "双重生成与标记错乱", "setup.52": "多个长度模块", "setup.53": "对回复篇幅的要求互相排斥", "quiz.1": "小测验：组建你的配置", "quiz.2": "五个问题——即可得到符合你游戏风格的开关清单。", "quiz.3": "1/5 · 你更喜欢哪种故事节奏？", "quiz.4": "慢热煎熬——眼神、暗示、漫长的路", "quiz.5": "中性——顺其自然", "quiz.6": "快速而炽热——从最初几场戏就充满激情", "quiz.7": "下一步 →", "quiz.8": "2/5 · 回复中需要图片吗？", "quiz.9": "不需要，只要文字", "quiz.10": "需要，我想要插图", "quiz.11": "下一步 →", "quiz.12": "3/5 · 如果要图片——用哪种提示词引擎？", "quiz.13": "NovelAI 风格：逗号分隔的标签", "quiz.14": "自然语言（banana）", "quiz.15": "跳过——不需要图片", "quiz.16": "下一步 →", "quiz.17": "4/5 · 用什么生成？（提供商）", "quiz.18": "自己的代理", "quiz.19": "机器人 @naistera_blocks_bot", "quiz.20": "LinkAPI", "quiz.21": "跳过", "quiz.22": "下一步 →", "quiz.23": "5/5 · 法术与神秘元素？", "quiz.24": "凡尘故事，不要法术", "quiz.25": "轻度神秘——占卜、征兆", "quiz.26": "完整的修仙武库", "quiz.27": "结果 ✦", "quiz.28": "↺ 重新开始", "tests.1": "迷你测试与诊断", "tests.2": "安装后的检查，以及「症状 → 处理」对照表。", "tests.3": "🧪 安装后的三个迷你测试", "tests.4": "<b>罗盘。</b>发送任意消息。回复开头应出现 JADE_STATUS 头部（不是原始文本！），结尾应有 JADE_BOND 面板。如果你看到 <code>[JADE_STATUS]</code> 以纯文本形式出现——说明文本正则未导入或未启用。", "tests.5": "<b>事件。</b>输入：「有人递给我一封来自师父的信」。应出现信件卡片。每次回复不超过两张事件界面卡片——这是正常的。", "tests.6": "<b>图片</b>（如已启用）：请求「让我看看女主角长什么样」。应触发带图片的画面/明镜，或整洁的占位卡片——而不是原始的 <code>[JADE_FLASH: …]</code>。", "tests.7": "🩺 诊断：症状 → 原因 → 处理", "tests.8": "症状", "tests.9": "原因", "tests.10": "处理", "tests.11": "聊天中出现原始 <code>[JADE_*]</code> 文本", "tests.12": "模块已启用，但配对的正则未启用（或未导入）", "tests.13": "导入/启用该正则；确认 🧹 чистка следов 已激活且排在最后", "tests.14": "重新生成回复后仍可见 <code>[JADE_FLASH]</code>", "tests.15": "旧版预设始终要求 FLASH", "tests.16": "更新到 v1.1——现在仅在画面激活时才要求 FLASH", "tests.17": "头部文字被截断/重叠", "tests.18": "模型填写了过长的字段值", "tests.19": "v1.1 中头部正则限制了高度；预设中也写入了「短值」规则——重新生成回复", "tests.20": "俄语游戏时头部显示英文", "tests.21": "旧版未固定字段值的语言", "tests.22": "v1.1：字段值跟随游戏语言。请更新预设", "tests.23": "模型回复的是旧消息而非最新消息", "tests.24": "过长的上下文使焦点偏移", "tests.25": "v1.1 新增了相关性规则；若仍复发——删除部分旧对话", "tests.26": "模型出现时间跳跃", "tests.27": "—", "tests.28": "v1.1 已禁止（时间规则 + 平行场景不得跳过主线时间）。请更新预设", "tests.29": "思绪消失", "tests.30": "旧版措辞过于「温和」", "tests.31": "v1.1：思绪为强制项（MANDATORY）。请更新预设", "tests.32": "图片未生成，但出现了占位界面卡片", "tests.33": "未填入令牌 / 提供商 URL 错误", "tests.34": "检查所选组的图片正则中 ⬇️вставить⬇️ 的位置", "tests.35": "图片重复 / 标记错乱", "tests.36": "启用了两个提供商组", "tests.37": "只保留一个：PROXY、NAISTERA 或 LINK", "tests.38": "回复「跑偏」，行为异常", "tests.39": "模块冲突（slowburn+fastburn、两个长度模块）", "tests.40": "对照「设置」标签页中的冲突表", "tests.41": "回复被截断", "tests.42": "API 设置中的 max tokens 不足", "tests.43": "提高回复令牌上限；基础配置每次回复约需 ~2k", "tests.44": "📜 v1.1 更新内容", "tests.45": "仅在启用画面时才要求 JADE_FLASH——关闭图片时的原始标签已消失", "tests.46": "新增正则 🧹 чистка следов——清扫孤立的图片标签", "tests.47": "头部：字段值使用游戏语言的短值 + 正则中的防溢出保护", "tests.48": "思绪改为强制；新增相关性规则（回复最新消息）与时间跳跃禁令", "tests.49": "缓和了反审查与预填充的措辞（「never break character's personality」）", "tests.50": "{{setvar}}/{{getvar}} 规则已用通俗语言重写", "custom.1": "自定义：去掉多余部分，改造成自己的样子", "custom.2": "预设是模块化的：几乎所有内容都可以关闭、移除或重写。这里介绍三个干预层级，以及最好不要越过的边界。", "custom.3": "🎚 层级 1——开关（安全）", "custom.4": "「去掉不用的东西」最简单的方法，就是直接在预设的提示词列表中关闭该模块。不会有任何删除或损坏：任何被关闭的开关都不会进入上下文。", "custom.5": "不需要某个法术模块（占卜、炼丹、仪式、符箓）——关闭它的开关。同时也可以关闭配对的界面卡片（见层级 2）。", "custom.6": "不需要世界模块（NPC、平行场景）——直接关闭，核心照常工作。", "custom.7": "不喜欢事件标签——关闭它的提示词要求和对应正则。", "custom.8": "进行大改之前，先用另一个名字复制一份预设——回滚只需几秒钟。", "custom.9": "🎴 层级 2——整体移除界面卡片", "custom.10": "界面卡片存在于三个位置，必须同步移除，否则模型会输出无人渲染的标签（或相反）：", "custom.11": "<b>1. 正则。</b>在文本包中关闭（或删除）该卡片的正则。如果它有图片版本（明镜 / 手账 / 画面）——也要在第二个包中关闭。", "custom.12": "<b>2. 标签要求。</b>在输出格式提示词中，删除要求输出该标签的那一行（例如提及 <code>[JADE_FLASH]</code> 或 <code>[JADE_MIRROR]</code> 的内容）。", "custom.13": "<b>3. 描述。</b>如果该标签出现在参考性提示词中（标签列表、「每次回复不超过两个」的规则）——也将其删除，让模型彻底不再想起它。", "custom.14": "核心的常驻界面卡片（<code>[JADE_STATUS]</code>、<code>[JADE_BOND]</code>、时间）最好不要动——状态逻辑依赖于它们。但如果实在想改，也按同样的三步方案移除。", "custom.15": "✏️ 层级 3——修改内容", "custom.16": "<b>关系阶段。</b>羁绊阶梯（Strangers → … → Bound / 陌路 → … → 同心）写在羁绊提示词中，并在面板正则中重复了一份。必须在<b>两处</b>同时修改：提示词中的文字决定模型写什么，正则中的文字决定进度条上显示什么。", "custom.17": "<b>界面卡片的颜色与字体。</b>每个正则的 <code>replaceString</code> 开头都有 CSS 变量块和 <code>font-family</code>。在那里修改数值；如果没有把握，不要动 HTML 结构。", "custom.18": "<b>节奏与长度。</b>对回复长度、节奏和 slowburn 阶段的要求，都是各自提示词中的普通文字规则；可以随意改写措辞。", "custom.19": "<b>文本与示例。</b>任何描述、思绪示例、法则措辞——都可以自由编辑，这只是普通的提示词文本。", "custom.20": "⛔ 绝对不要做的事", "custom.21": "<b>不要重命名标记键</b>（<code>uroven</code>、<code>procent</code>、<code>nezhnost</code> 等）。它们被硬编码在正则中——在提示词里一改名，面板就停止填充。键名永远保持拉丁字母。", "custom.22": "<b>不要重命名标签本身</b>（<code>[JADE_STATUS]</code>、<code>[JADE_BOND]</code>……）——正则查找的正是这些字符串。", "custom.23": "<b>不要改变包内正则的顺序</b>——它们按顺序执行，顺序很重要（例如 🧹 чистка следов 必须最后执行）。", "custom.24": "<b>不要删除 🧹 чистка следов 正则</b>——它负责清扫孤立的图片标签；没有它，聊天里会留下垃圾。", "custom.25": "<b>如果对语法没有把握，不要动 <code>findRegex</code></b>——多一个括号，界面卡片就不再出现。先复制，再修改。", "custom.26": "🧭 「我想要……」→「该怎么做」", "custom.27": "「我不需要炼丹」→ 关闭炼丹开关 + ⚗️ алхимия 正则 + 格式中的标签行。", "custom.28": "「我想改关系阶段的名称」→ 修改羁绊提示词中的列表和 🪷 связь 正则中的阶梯（两处都要改！）。", "custom.29": "「界面卡片太艳 / 想换颜色」→ 修改其正则 <code>replaceString</code> 开头的 CSS 变量。", "custom.30": "「回复太长」→ 修改散文/格式提示词中的长度规则。", "custom.31": "「完全不要图片」→ 关闭整个第二个正则包，以及明镜/手账/画面的提示词。", "custom.32": "「我想要自己的界面卡片」→ 复制一个现有正则作为模板，想一个新标签 <code>[JADE_...]</code>，在格式中添加标签要求，并把该正则放在 🧹 чистка следов 之前。", "custom.33": "如果修改后出了问题——见 🩺 诊断标签页：「症状 → 原因 → 处理」表格涵盖了常见故障。"}};
+const QT = {"ru": {"core": "всё ядро (по умолчанию)", "textpack": "весь текстовый пакет (18 шт.)", "slow": "<b>slowburn</b> (15 стадий)", "fast": "<b>fastburn</b>", "novel": "группу <b>⬇️novel⬇️</b> + вспышка/зеркало/момент по вкусу", "banana": "группу <b>⬇️banana⬇️</b> + вспышка/зеркало/момент по вкусу", "proxy": "<b>PROXY</b> — впиши свой URL + токен", "naistera": "<b>NAISTERA</b> — токен от @naistera_blocks_bot", "link": "<b>LINK</b> — токен LinkAPI", "oneprov": "одну группу провайдера", "imgpack": "картиночный пакет: только группа ", "cleanup": "🧹 чистка следов — последней в списке", "magiclight": "магия: гадание, знамения, талисманы", "magicfull": "магия: полный набор (смотри режим «Путь бессмертного» во вкладке Магия)", "title": "<h4>✦ Твоя конфигурация</h4>", "enable": "<p><b>В пресете включи:</b></p>", "regexes": "<p><b>Регексы:</b></p>", "warn": "<p class=\"note\">Не забудь: slowburn и fastburn не включаются вместе; novel и banana — тоже. Одна группа провайдера картинок — строго одна.</p>"}, "en": {"core": "the whole core (default)", "textpack": "the full text pack (18 regexes)", "slow": "<b>slowburn</b> (15 stages)", "fast": "<b>fastburn</b>", "novel": "the <b>⬇️novel⬇️</b> group + flash/mirror/moment to taste", "banana": "the <b>⬇️banana⬇️</b> group + flash/mirror/moment to taste", "proxy": "<b>PROXY</b> — enter your own URL + token", "naistera": "<b>NAISTERA</b> — token from @naistera_blocks_bot", "link": "<b>LINK</b> — LinkAPI token", "oneprov": "one provider group", "imgpack": "image pack: only the group ", "cleanup": "🧹 trace cleanup — last in the list", "magiclight": "magic: divination, omens, talismans", "magicfull": "magic: full set (see the “Path of the Immortal” mode in the Magic tab)", "title": "<h4>✦ Your configuration</h4>", "enable": "<p><b>Enable in the preset:</b></p>", "regexes": "<p><b>Regexes:</b></p>", "warn": "<p class=\"note\">Remember: slowburn and fastburn cannot be enabled together; same for novel and banana. Exactly one image provider group — strictly one.</p>"}, "zh": {"core": "全部核心（默认）", "textpack": "整个文本包（18 条正则）", "slow": "<b>慢热 slowburn</b>（15 个阶段）", "fast": "<b>快热 fastburn</b>", "novel": "<b>⬇️novel⬇️</b> 组 + 画面/明镜/手账按需选择", "banana": "<b>⬇️banana⬇️</b> 组 + 画面/明镜/手账按需选择", "proxy": "<b>PROXY</b>——填写你自己的 URL 和令牌", "naistera": "<b>NAISTERA</b>——来自 @naistera_blocks_bot 的令牌", "link": "<b>LINK</b>——LinkAPI 令牌", "oneprov": "一个提供商组", "imgpack": "图片包：仅启用该组 ", "cleanup": "🧹 痕迹清理——放在列表最后", "magiclight": "法术：占卜、兆眼、符箓", "magicfull": "法术：完整套装（见「法术」标签页中的「登仙之路」模式）", "title": "<h4>✦ 你的配置</h4>", "enable": "<p><b>在预设中启用：</b></p>", "regexes": "<p><b>正则：</b></p>", "warn": "<p class=\"note\">注意：慢热与快热不能同时启用；novel 与 banana 亦然。图片提供商组——严格只选一个。</p>"}};
+let CUR = localStorage.getItem('jade-lang') || 'ru';
+const ORIG = {};
+document.querySelectorAll('[data-i18n]').forEach(el => { ORIG[el.dataset.i18n] = el.innerHTML; });
+function setLang(l) {
+  CUR = l;
+  localStorage.setItem('jade-lang', l);
+  document.documentElement.lang = (l === 'zh') ? 'zh-CN' : l;
+  document.body.classList.toggle('lang-zh', l === 'zh');
+  const dict = I18N[l] || {};
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    el.innerHTML = (l === 'ru') ? ORIG[k] : (dict[k] || ORIG[k]);
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('act', b.dataset.lang === l));
+  const qr = document.getElementById('quizResult');
+  if (qr && !qr.hidden) showResult();
+}
+document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+if (CUR !== 'ru') setLang(CUR);
+
+document.querySelectorAll('.tab:not(.lang-btn)').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab:not(.lang-btn)').forEach(x => x.classList.remove('act'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
+    t.classList.add('act');
+    document.getElementById(t.dataset.tab).classList.add('act');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+step(1);
+</script>
+</body>
+</html>
